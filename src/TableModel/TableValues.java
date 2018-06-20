@@ -33,7 +33,6 @@ public class TableValues extends AbstractTableModel {
 				String[] valuesRow = new String[colCount + 1];
 				for (int i = 0; i <= colCount - 1; i++) {
 					valuesRow[i] = result.getString(i + 1);
-					System.out.println(valuesRow[i]);
 				}
 				values.add(valuesRow);
 			}
