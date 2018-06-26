@@ -24,8 +24,8 @@ public class TableValues extends AbstractTableModel {
 	 * Lấy dữ liệu từ database đưa vào ArrayList values Biến result tr�? lần lượt
 	 * đến các row của table, lấy giá trị row nạp vào values
 	 */
-	public TableValues(String tableName) {
-		d = new Database(tableName);
+	public TableValues(String tableName, Database d) {
+		this.d = d;
 		result = d.getResultSet();
 		getInformationData();
 		try {
@@ -42,9 +42,7 @@ public class TableValues extends AbstractTableModel {
 		}
 	}
 
-	/*
-	 * Lấy các thông tin v�? MetaData : Số column, Tên hiển thị của các column
-	 */
+	/* Lấy các thông tin v�? MetaData : Số column, Tên hiển thị của các column */
 	public void getInformationData() {
 		try {
 			colCount = result.getMetaData().getColumnCount();
@@ -57,35 +55,51 @@ public class TableValues extends AbstractTableModel {
 		}
 	}
 
-	/*
-	 * Lấy số lượng column trong table
-	 */
+	/* Lấy số lượng column trong table */
 	@Override
 	public int getColumnCount() {
 		return colCount;
 	}
 
-	/*
-	 * Lấy số lượng row trong table
-	 */
+	/* Lấy số lượng row trong table */
 	@Override
 	public int getRowCount() {
 		return values.size();
 	}
 
-	/*
-	 * Lấy giá trị 1 vị trí trong table
-	 */
+	/* Lấy giá trị 1 vị trí trong table */
 	@Override
 	public Object getValueAt(int rowIndex, int colIndex) {
 		return values.get(rowIndex)[colIndex];
 	}
 
-	/*
-	 * Lấy tên các column trong table
-	 */
+	/* Lấy tên các column trong table */
 	@Override
 	public String getColumnName(int column) {
+		String s = colName[column];
+		if (s.equals("MaMuonTra")) return "Mã mượn trả";
+		else if (s.equals("MaSach")) return "Mã sách";
+		else if (s.equals("NgayTra")) return "Ngày trả (yyyy-mm-dd)";
+		else if (s.equals("TienPhat")) return "Tiền phạt";
+		else if (s.equals("GhiChu")) return "Ghi chú";
+		else if (s.equals("MaDocGia")) return "Mã độc giả";
+		else if (s.equals("TenDocGia")) return "Tên độc giả";
+		else if (s.equals("NgaySinh")) return "Ngày sinh (yyyy-mm-dd)";
+		else if (s.equals("GioiTinh")) return "Giới tính (Nam/Nữ)";
+		else if (s.equals("QueQuan")) return "Quê quán";
+		else if (s.equals("NgayMuon")) return "Ngày mượn (yyyy-mm-dd)";
+		else if (s.equals("NgayHenTra")) return "Ngày hẹn trả (yyyy-mm-dd)";
+		else if (s.equals("TenSach")) return "Tên sách";
+		else if (s.equals("TenTacGia")) return "Tên tác giả";
+		else if (s.equals("NhaSanXuat")) return "Nhà sản xuất";
+		else if (s.equals("NamXuatBan")) return "Năm xuất bản";
+		else if (s.equals("TheLoai")) return "Thể loại";
+		else if (s.equals("DonGia")) return "Đơn giá";
+		else if (s.equals("SoLuong")) return "Số lượng";
+		else return s;
+	}
+	
+	public String getColumnNameDataBase(int column) {
 		return colName[column];
 	}
 }

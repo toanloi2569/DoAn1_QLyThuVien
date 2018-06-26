@@ -1,7 +1,11 @@
 package Frame;
 
+import Database.Database;
+
 public class Main {
+	public static String tableName = "sach";
+	public static EditFrame e;
 	public static void main(String[] args) {
-		EditFrame e = new EditFrame("Sach");
+		e = new EditFrame(tableName);
 	}
 }
