@@ -24,7 +24,7 @@ public class TableValues extends AbstractTableModel {
 	 * Lấy dữ liệu từ database đưa vào ArrayList values Biến result tr�? lần lượt
 	 * đến các row của table, lấy giá trị row nạp vào values
 	 */
-	public TableValues(String tableName, Database d) {
+	public TableValues(Database d) {
 		this.d = d;
 		result = d.getResultSet();
 		getInformationData();
@@ -73,7 +73,7 @@ public class TableValues extends AbstractTableModel {
 		return values.get(rowIndex)[colIndex];
 	}
 
-	/* Lấy tên các column trong table */
+	/* Lấy tên các column trong table, thêm dấu tiếng việt  */
 	@Override
 	public String getColumnName(int column) {
 		String s = colName[column];
@@ -96,10 +96,57 @@ public class TableValues extends AbstractTableModel {
 		else if (s.equals("TheLoai")) return "Thể loại";
 		else if (s.equals("DonGia")) return "Đơn giá";
 		else if (s.equals("SoLuong")) return "Số lượng";
+		else if (s.equals("MaNhanVien")) return "Mã nhân viên";
+		else if (s.equals("TenNhanVien")) return "Tên nhân viên";
 		else return s;
 	}
 	
+	/* Trả ra tên cột đúng của bảng */
 	public String getColumnNameDataBase(int column) {
 		return colName[column];
+	}
+	
+	/* Thêm 1 hàng vào database 
+	 * Trả ra true nếu thành công, false nếu không thành công 
+	 */
+	public boolean insertRow(String[] data){
+		if (d.insertRow(data)) {
+			for (int i = 0; i < data.length; i++) {
+				if (data[i] != null) 
+					data[i] = data[i].substring(1, data[i].length()-1);
+			}
+			values.add(data);
+			return true;
+		} 
+		else return false;
+	}
+	
+	/* Thay đổi giá trị 1 hàng trong database 
+	 * Trả ra true nếu thành công, false nếu không thành công
+	 */
+	public boolean updateRow(String[] data, int row){
+		String pk1 = (String) getValueAt(row, 0);
+		String pk2 = (String) getValueAt(row, 1);
+		if (d.updateRow(pk1, pk2, data)) {
+			for (int i = 0; i < data.length; i++) 
+				if (data[i] != null)
+					data[i] = data[i].substring(1, data[i].length()-1);
+			values.set(row, data);
+			return true;
+		}
+		else return false;
+	}
+	
+	/* Xóa 1 hàng trong database
+	 * Trả ra true nếu thành công, false nếu không thành công
+	 */
+	public boolean deleteRow(int row){
+		String pk1 = "'" + (String)getValueAt(row, 0) + "'";
+		String pk2 = "'" + (String)getValueAt(row, 1) + "'";
+		if (d.deleteRow(pk1, pk2)) {
+			values.remove(row);
+			return true;
+		}
+		else return false;
 	}
 }

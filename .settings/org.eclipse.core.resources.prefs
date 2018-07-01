@@ -1,7 +1,14 @@
 eclipse.preferences.version=1
 encoding//src/Check/CheckInfoInput.java=UTF-8
 encoding//src/Database/Database.java=UTF-8
-encoding//src/Frame/AddAndUpdate_EditFrame.java=UTF-8
-encoding//src/Frame/EditFrame.java=UTF-8
+encoding//src/Frame/Abstract_DataFrame.java=UTF-8
+encoding//src/Frame/Abstract_EditFrame.java=UTF-8
+encoding//src/Frame/Abstract_MTDataFrame.java=UTF-8
+encoding//src/Frame/Add_EditFrame.java=UTF-8
+encoding//src/Frame/DocGia_DataFrame.java=UTF-8
 encoding//src/Frame/Main.java=UTF-8
+encoding//src/Frame/Muon_DataFrame.java=UTF-8
+encoding//src/Frame/NhanVien_DataFrame.java=UTF-8
+encoding//src/Frame/Sach_DataFrame.java=UTF-8
+encoding//src/Frame/Update_EditFrame.java=UTF-8
 encoding//src/TableModel/TableValues.java=UTF-8

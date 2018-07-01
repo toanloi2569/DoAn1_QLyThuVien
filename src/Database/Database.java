@@ -2,18 +2,18 @@ package Database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.JOptionPane;
 
-import Frame.EditFrame;
 import TableModel.TableValues;
 
 public class Database {
 	private Connection con;
 	private Statement stmt;
-	String tableName;
+	private String tableName;
 
 	/*
 	 * Kết nối dữ liệu đến database là table được truyền vào (tableName) 
@@ -30,6 +30,7 @@ public class Database {
 
 			// Tạo đối tượng Statement
 			stmt = con.createStatement();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -42,75 +43,88 @@ public class Database {
 	public ResultSet getResultSet() {
 		ResultSet result = null;
 		try {
-			result = stmt.executeQuery("select * from " + tableName);
+			result = stmt.executeQuery("select * from "+ tableName);
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return result;
 	}
 	
-	/* Thêm 1 row vào database
+	/* Thêm 1 row vào database, trả ra true nếu thêm thành công
 	 * Input : 1 mảng data[] các giá trị cần thêm và 1 bảng lưu database hiện tại
 	 * Output : Thêm data[] vào database 
 	 */
-	public void insertRow(String[] data,TableValues vls) {
-		/* Từ data, xây dựng values cần thêm */
+	public boolean  insertRow(String[] data) {
+		/* Xây dựng s là chuỗi giá trị cần thêm */
+		ResultSet result = getResultSet();
 		String s = "";
-		for (int i = 0; i < vls.getColumnCount(); i++) 
-			s += data[i] + ","; 
-		
-		/* Thêm values vào query SQL */
 		try {
+			for (int i = 0; i < result.getMetaData().getColumnCount(); i++) 
+				s += data[i] + ","; 
 			stmt.executeUpdate(
 				"insert into " + tableName +  
 				" values (" + s.substring(0,s.length()-1) +")" 
 			);
+			return true;
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, 
-					"Trùng với dữ liệu đã có\nThay đổi mã sách, mã mượn trả hoặc mã độc giả để sửa" ,
+					"Lỗi dữ liệu nhập vào" ,
 					"", JOptionPane.WARNING_MESSAGE);
 			e.printStackTrace();
+			return false;
 		}
 	}
 	
-	/* Thay đổi 1 row trong datavase
+	/* Thay đổi 1 row trong database, trả ra true nếu thành công
 	 * Input : 1 mảng data[] các giá trị cần update, bảng lưu database và 1 hàng cần update 
 	 * Output : Thay đổi giá trị trong database bằng giá trị trong mảng data[] 
 	 */
-	public void updateRow(String data[],TableValues vls, int getRow) {
+	public boolean updateRow(String pk1, String pk2, String data[]) {
 		/* Xây dựng query từ data */
 		String s = "update " + tableName + " set\n ";
-		for (int i = 0; i < vls.getColumnCount(); i++) {
-			s += vls.getColumnNameDataBase(i) + "=" + data[i]; 
-			if (i < vls.getColumnCount()-1) s += ",\n"; 
+		ResultSet result = getResultSet();
+		try {
+		ResultSetMetaData m = result.getMetaData();
+		for (int i = 1; i <= m.getColumnCount(); i++) {
+			s += m.getColumnName(i) + "=" + data[i-1]; 
+			if (i < m.getColumnCount()) s += ",\n"; 
 			else s += "\n";
 		}
-		s += "where\n " + vls.getColumnNameDataBase(0) + "='" + vls.getValueAt(getRow, 0) + "' and\n"
-				   		+ vls.getColumnNameDataBase(1) + "='" + vls.getValueAt(getRow, 1) + "';";
-		try {
+		s += "where\n " + m.getColumnName(1) + "='" + pk1 + "' and\n"
+				   		+ m.getColumnName(2) + "='" + pk2 + "';";
+	
 			stmt.executeUpdate(s);
+			return true;
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, 
-					"Trùng với dữ liệu đã có\nThay đổi mã sách, mã mượn trả hoặc mã độc giả để sửa" ,
+					"Lỗi dữ liệu nhập vào" ,
 					"", JOptionPane.WARNING_MESSAGE);
 			e.printStackTrace();
+			return false;
 		}
 	}
 	
-	/* Xóa 1 row trong database 
+	/* Xóa 1 row trong database, trả ra true nếu thành công
 	 * Input : Khóa chính, bảng lưu database, hàng cần hóa
 	 * Output : Xóa hàng getRow trong database
 	 */
-	public void deleteRow(String pk1, String pk2, TableValues vls, int getRow) {
+	public boolean  deleteRow(String pk1, String pk2) {
 		String s = "delete from " + tableName + "\nwhere ";
-		s += vls.getColumnNameDataBase(0) + "=" + pk1 + "and\n" 
-		   + vls.getColumnNameDataBase(1) + "=" + pk2 + ";";
-		System.out.println(s);
+		ResultSet result = getResultSet();
 		try {
+			ResultSetMetaData m = result.getMetaData();
+			s += m.getColumnName(1) + "=" + pk1 + "and\n" 
+			   + m.getColumnName(2) + "=" + pk2 + ";";
 			stmt.executeUpdate(s);
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, 
+					"Xóa không thành công" ,
+					"", JOptionPane.WARNING_MESSAGE);
 			e.printStackTrace();
+			return false;
 		}
 	}
 	

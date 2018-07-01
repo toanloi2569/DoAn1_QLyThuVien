@@ -143,7 +143,7 @@ public class CheckInfoInput {
 	
 	/* Kiểm tra có là giới tính không */
 	public boolean isNotSex() {
-		if (InputText.toLowerCase().equals("nam") || InputText.equals("nu")) {
+		if (InputText.toLowerCase().equals("nam") || InputText.equals("nữ")) {
 			mess = " : Không đúng định dạng giới tính, định dạng giới tính : Nam, Nữ";
 			return false;
 		}
@@ -182,14 +182,14 @@ public class CheckInfoInput {
 	 * Mã sách phải là chữ hoa, nhỏ hơn 9 ký tự
 	 */
 	public boolean isNotID() {
-		if (InputText.length() > 7) {
-			mess = " : Mã có ít hơn 8 ký tự";
+		if (InputText.length() > 10) {
+			mess = " : Mã phải có ít hơn 11 ký tự";
 			return true;
 		}
 		for (int i = 0; i < InputText.length(); i++) {
 			char c = InputText.charAt(i);
 			if ((c > '9' || c < '0') && (c > 'Z' || c < 'A')) {
-				mess = " : Mã chỉ có chữ hoa và số";
+				mess = " : Mã chỉ được là chữ hoa và số";
 				return true;
 			}
 		}
