@@ -8,11 +8,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Database.Database;
-import TableModel.TableValues;
+import TableModel.TableDatabase;
 
 public class DocGia_DataFrame extends Abstract_DataFrame{
 	private static Database d = new Database("docgia");
-	private static TableValues vls = new TableValues(d);
+	private static TableDatabase vls = new TableDatabase(d);
 
 	public DocGia_DataFrame() {
 		super(vls);
@@ -34,8 +34,7 @@ public class DocGia_DataFrame extends Abstract_DataFrame{
 		this.AddButton_Data.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Add_EditFrame a = new Add_EditFrame(vls,DocGia_DataFrame.this);
-				a.displayFrame();
+				Them_EditFrame a = new Them_EditFrame(vls,DocGia_DataFrame.this);
 			}
 		});
 	}
@@ -53,8 +52,7 @@ public class DocGia_DataFrame extends Abstract_DataFrame{
 					JOptionPane.showMessageDialog(null, "Chưa chọn dữ liệu để thay đổi");
 					return;
 				}
-				Update_EditFrame a = new Update_EditFrame(vls, DocGia_DataFrame.this);
-				a.displayFrame();
+				Sua_EditFrame a = new Sua_EditFrame(vls, DocGia_DataFrame.this);
 			}
 		});
 	}
@@ -76,7 +74,7 @@ public class DocGia_DataFrame extends Abstract_DataFrame{
 				int click = JOptionPane.showConfirmDialog(null, "Chắc chắn xóa dữ liệu ?", 
 						"", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (click == JOptionPane.YES_OPTION) {
-					 if(vls.deleteRow(getRow)) 
+					 if(vls.deleteSingleRow(getRow)) 
 						 resetTableAndInfo();
 				}
 			}

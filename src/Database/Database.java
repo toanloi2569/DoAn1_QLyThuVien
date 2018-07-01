@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 import javax.swing.JOptionPane;
 
-import TableModel.TableValues;
+import TableModel.TableDatabase;
 
 public class Database {
 	private Connection con;

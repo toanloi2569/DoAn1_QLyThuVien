@@ -13,7 +13,7 @@ import Database.Database;
  * 
  * Lấy dữ liệu từ database, cài đặt định danh cột hiển thị
  */
-public class TableValues extends AbstractTableModel {
+public class TableDatabase extends AbstractTableModel {
 	ArrayList<String[]> values = new ArrayList<String[]>();
 	Database d;
 	ResultSet result;
@@ -24,7 +24,7 @@ public class TableValues extends AbstractTableModel {
 	 * Lấy dữ liệu từ database đưa vào ArrayList values Biến result tr�? lần lượt
 	 * đến các row của table, lấy giá trị row nạp vào values
 	 */
-	public TableValues(Database d) {
+	public TableDatabase(Database d) {
 		this.d = d;
 		result = d.getResultSet();
 		getInformationData();
@@ -101,6 +101,10 @@ public class TableValues extends AbstractTableModel {
 		else return s;
 	}
 	
+	public String[] getValuesRowAt(int row) {
+		return values.get(row);
+	}
+	
 	/* Trả ra tên cột đúng của bảng */
 	public String getColumnNameDataBase(int column) {
 		return colName[column];
@@ -109,7 +113,7 @@ public class TableValues extends AbstractTableModel {
 	/* Thêm 1 hàng vào database 
 	 * Trả ra true nếu thành công, false nếu không thành công 
 	 */
-	public boolean insertRow(String[] data){
+	public boolean insertSingleRow(String[] data){
 		if (d.insertRow(data)) {
 			for (int i = 0; i < data.length; i++) {
 				if (data[i] != null) 
@@ -124,7 +128,7 @@ public class TableValues extends AbstractTableModel {
 	/* Thay đổi giá trị 1 hàng trong database 
 	 * Trả ra true nếu thành công, false nếu không thành công
 	 */
-	public boolean updateRow(String[] data, int row){
+	public boolean updateSingleRow(String[] data, int row){
 		String pk1 = (String) getValueAt(row, 0);
 		String pk2 = (String) getValueAt(row, 1);
 		if (d.updateRow(pk1, pk2, data)) {
@@ -140,7 +144,7 @@ public class TableValues extends AbstractTableModel {
 	/* Xóa 1 hàng trong database
 	 * Trả ra true nếu thành công, false nếu không thành công
 	 */
-	public boolean deleteRow(int row){
+	public boolean deleteSingleRow(int row){
 		String pk1 = "'" + (String)getValueAt(row, 0) + "'";
 		String pk2 = "'" + (String)getValueAt(row, 1) + "'";
 		if (d.deleteRow(pk1, pk2)) {

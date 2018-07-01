@@ -16,17 +16,17 @@ import javax.swing.JTextField;
 
 import Check.CheckInfoInput;
 import Database.Database;
-import TableModel.TableValues;
+import TableModel.TableDatabase;
 
 public abstract class Abstract_EditFrame {
 	JFrame mainFrame;
 	JTextField[] GetInfoTextArea;
 	JButton jButton;
 	JLabel[] jLabels;
-	TableValues vls;
+	TableDatabase vls;
 	Abstract_DataFrame f;
 	String mess;
-	public Abstract_EditFrame(TableValues vls, Abstract_DataFrame f) {
+	public Abstract_EditFrame(TableDatabase vls, Abstract_DataFrame f) {
 		this.vls = vls;
 		this.f = f;
 
@@ -61,7 +61,7 @@ public abstract class Abstract_EditFrame {
 		p.add(jButton);
 
 		mainFrame.add(p);
-		mainFrame.setVisible(false);
+		mainFrame.setVisible(true);
 	};
 
 	/* Thêm các ô để nhập dữ liệu vào trong Frame */
@@ -174,8 +174,4 @@ public abstract class Abstract_EditFrame {
 	/* Cài đặt sự kiện khi nhấn thêm hoặc sửa */
 	abstract void setAction();
 
-	/* Hiển thị mainFrame */
-	public void displayFrame() {
-		mainFrame.setVisible(true);
-	}
 }

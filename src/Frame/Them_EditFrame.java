@@ -5,11 +5,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
-import TableModel.TableValues;
+import TableModel.TableDatabase;
 
-public class Add_EditFrame extends Abstract_EditFrame {
+public class Them_EditFrame extends Abstract_EditFrame {
 
-	public Add_EditFrame(TableValues vls, Abstract_DataFrame f) {
+	public Them_EditFrame(TableDatabase vls, Abstract_DataFrame f) {
 		super(vls,f);
 		// TODO Auto-generated constructor stub
 		mainFrame.setTitle("Thêm dữ liệu");
@@ -26,20 +26,20 @@ public class Add_EditFrame extends Abstract_EditFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (checkInfo()) {
 					/* Nếu thỏa mãn điều kiện sẽ được hỏi có nhập vào database không */
-					int click = JOptionPane.showConfirmDialog(null, "Chắc chắn nhập dữ liệu", "Xác nhận nhập dữ liệu",
-							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-					
-					/* Nếu đồng ý nhập, lấy dữ liệu từ text, cho vào String data, rồi truyền vào query */
-					if (click == JOptionPane.YES_OPTION) {
+//					int click = JOptionPane.showConfirmDialog(null, "Chắc chắn nhập dữ liệu", "Xác nhận nhập dữ liệu",
+//							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+//					
+//					/* Nếu đồng ý nhập, lấy dữ liệu từ text, cho vào String data, rồi truyền vào query */
+//					if (click == JOptionPane.YES_OPTION) {
 						String[] data = new String [vls.getColumnCount()];
 						/* Lấy dữ liệu từ text */
 						for (int i = 0; i < vls.getColumnCount(); i++) {
 							if (GetInfoTextArea[i].getText().length() == 0) 
 								data[i] = null;
 							else data[i] = "'"+GetInfoTextArea[i].getText()+"'";	
-						}
+//						}
 						
-						if (vls.insertRow(data)) f.resetTableAndInfo();
+						if (vls.insertSingleRow(data)) f.resetTableAndInfo();
 					}
 				} 
 				

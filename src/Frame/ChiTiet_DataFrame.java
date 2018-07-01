@@ -1,11 +1,11 @@
 package Frame;
 
 import Database.Database;
-import TableModel.TableValues;
+import TableModel.TableDatabase;
 
 public class ChiTiet_DataFrame extends Abstract_DataFrame{
 	private static Database d = new Database("chitietmuontra");
-	private static TableValues vls = new TableValues(d);
+	private static TableDatabase vls = new TableDatabase(d);
 
 	public ChiTiet_DataFrame() {
 		super(vls);

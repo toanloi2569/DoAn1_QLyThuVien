@@ -23,7 +23,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Database.Database;
-import TableModel.TableValues;
+import TableModel.TableDatabase;
 
 /*
  *	Frame có 2 phần chính là DisplayDataPanel và InformationPanel
@@ -37,14 +37,14 @@ public abstract class Abstract_DataFrame extends JPanel{
 	private final int mainFrameHeight = 600;
 	private final int DataPanelWidth = (int) (0.7 * mainFrameWidth);
 //	private Database d;
-	private TableValues vls;
+	private TableDatabase vls;
 	public static int getRow = -1;
 	JLabel SearchLabel;
 	JTable mainTable_Data;
 
 	/* Thành phần DataPanel */
 	private JPanel DataPanel;
-	private JPanel SearchPanel_Data, DisplayPanel_Data;
+	JPanel SearchPanel_Data, DisplayPanel_Data;
 	JButton DisplayAllButton_Data, SearchButton_Data, AdvSearchButton_Data, AddButton_Data;
 	private JScrollPane TableScrollPanel_Data;
 
@@ -61,7 +61,7 @@ public abstract class Abstract_DataFrame extends JPanel{
 	 * prepareGUI : Đặt các đối tượng một cách tương đối vào frame 
 	 * setupTable : Lấy dữ liệu từ vls đặt vào table
 	 */
-	public Abstract_DataFrame(TableValues vls) {
+	public Abstract_DataFrame(TableDatabase vls) {
 		this.vls = vls;
 		
 		/* Đặt các thành phần 1 cách tương đối vào frame */
@@ -201,6 +201,7 @@ public abstract class Abstract_DataFrame extends JPanel{
 		TextArea_Information.setEditable(false);
 		TextArea_Information.setBackground(null);
 		JScrollPane jScrollPane = new JScrollPane(TextArea_Information);
+		jScrollPane.setPreferredSize(new Dimension(180, 600));
 		jScrollPane.setBorder(BorderFactory.createCompoundBorder(
 				 BorderFactory.createEmptyBorder(5, 5, 5, 5),BorderFactory.createEtchedBorder()));
 		
