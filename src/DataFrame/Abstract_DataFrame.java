@@ -1,4 +1,4 @@
-package Frame;
+package DataFrame;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -30,7 +30,7 @@ import TableModel.TableDatabase;
  * 	+ DisplayDataPanel hiển thị database, gồm 1 search_DataPanel và 1 display_DataPanel
  * 		- search_DataPanel gồm : 1 button hiển thị toàn bộ dữ liệu và 1 button tìm kiếm
  * 		- display_DataPanel gồm : 1 table hiển thị data, button addRow
- * 	+ Imformation hiển thị thông tin chi tiết của từng Row chọn
+ * 	+ Imformation hiển thị thông tin chi tiết của từng Row ch�?n
  */
 public abstract class Abstract_DataFrame extends JPanel{
 	private final int mainFrameWidth = 1300;
@@ -43,14 +43,15 @@ public abstract class Abstract_DataFrame extends JPanel{
 	JTable mainTable_Data;
 
 	/* Thành phần DataPanel */
-	private JPanel DataPanel;
+	JPanel DataPanel;
 	JPanel SearchPanel_Data, DisplayPanel_Data;
 	JButton DisplayAllButton_Data, SearchButton_Data, AdvSearchButton_Data, AddButton_Data;
-	private JScrollPane TableScrollPanel_Data;
+	JScrollPane TableScrollPanel_Data;
 
 	/* Thành phần InformationPanel */
 	JPanel InformationPanel;
-	private JTextArea TextArea_Information;
+	JTextArea TextArea_Information;
+	JPanel buttonPanel;
 	JButton UpdateButton_Information, DeleteButton_Information;
 
 	/* 
@@ -58,13 +59,13 @@ public abstract class Abstract_DataFrame extends JPanel{
 	 * Tạo 1 editFrame Gồm tableName : hiển thị table đó trong phần displayData 
 	 * vls : đối tượng chứa dữ liệu table 
 	 * searchName : đặt giá trí cho searchName, hiển thị cho phù hợp với bảng đang xét 
-	 * prepareGUI : Đặt các đối tượng một cách tương đối vào frame 
+	 * prepareGUI : �?ặt các đối tượng một cách tương đối vào frame 
 	 * setupTable : Lấy dữ liệu từ vls đặt vào table
 	 */
 	public Abstract_DataFrame(TableDatabase vls) {
 		this.vls = vls;
 		
-		/* Đặt các thành phần 1 cách tương đối vào frame */
+		/* �?ặt các thành phần 1 cách tương đối vào frame */
 		prepareGUI();
 
 		/* Lấy dữ liệu từ database đặt vào table, hiển thị table */
@@ -81,7 +82,7 @@ public abstract class Abstract_DataFrame extends JPanel{
 	}
 
 	/*
-	 * Đặt thành phần 1 cách tương đối vào frame Hiển thị frame addDataPanel :
+	 * �?ặt thành phần 1 cách tương đối vào frame Hiển thị frame addDataPanel :
 	 * Thêm các thành phần vào DataPanel addInformation : Thêm các thành phần
 	 * vào InformationPanel Thêm 2 panel vào frame
 	 */
@@ -181,7 +182,7 @@ public abstract class Abstract_DataFrame extends JPanel{
 	}
 
 	/* Thêm vị trí tương đối của InformationPanel 
-	 * 		Gồm : 	1 text area hiển thị thông tin row đang được chọn
+	 * 		Gồm : 	1 text area hiển thị thông tin row đang được ch�?n
 	 * 				1 update button
 	 * 				1 delete button
 	 */
@@ -210,7 +211,7 @@ public abstract class Abstract_DataFrame extends JPanel{
 		DeleteButton_Information = new JButton();
 
 		/* Thêm 2 button vào cùng 1 dòng, sử dụng 1 JPanel */
-		JPanel buttonPanel = new JPanel(new FlowLayout());
+		buttonPanel = new JPanel(new FlowLayout());
 		buttonPanel.add(UpdateButton_Information);
 		buttonPanel.add(DeleteButton_Information);
 

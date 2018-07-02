@@ -1,4 +1,4 @@
-package Frame;
+package DataFrame;
 
 import java.awt.Dimension;
 
@@ -10,9 +10,9 @@ import TableModel.TableDatabase;
 import TableModel.TableTemporary;
 
 public abstract class Abstract_MTDataFrame extends Abstract_DataFrame {
-	public JScrollPane TableScrollPanel;
-	public JTable TemporaryTable;
-	public TableTemporary tvls;
+	JScrollPane TableScrollPanel;
+	JTable TemporaryTable;
+	TableTemporary tvls;
 
 	public Abstract_MTDataFrame(TableDatabase vls) {
 		super(vls);

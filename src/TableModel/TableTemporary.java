@@ -7,10 +7,8 @@ import javax.swing.table.AbstractTableModel;
 import Database.Database;
 
 public class TableTemporary extends AbstractTableModel{
-	final int isDuplicate = 1;
-	final int isNotDuplicate = 0;
-	Database d = new Database("chitietmuontra");
-	ArrayList<String[]> values = new ArrayList<String[]>(); 
+	private Database d = new Database("chitietmuontra");
+	private ArrayList<String[]> values = new ArrayList<String[]>(); 
 	
 	public TableTemporary() {
 		// TODO Auto-generated constructor stub
@@ -42,10 +40,18 @@ public class TableTemporary extends AbstractTableModel{
 		return values.get(rowIndex)[colIndex];
 	}
 	
-	public void addValue(String[] data) {
-		for (int i = 0; i < data.length; i++) 
-			for (int j = 0; j < values.size(); j++) {
-				
-			}
+	/* Thêm giá trị mới vào bảng. nhưng không thay đổi database */
+	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		// TODO Auto-generated method stub
+		String[] data = new String[getColumnCount()];
+		data = values.get(rowIndex);
+		data[columnIndex] = aValue+"";
+		values.set(rowIndex, data);
+	}
+	
+	/* Thêm giá trị nhưng không làm thay đổi database */
+	public void addSingleValue(String[] data) {
+		values.add(data);
 	}
 }

@@ -14,11 +14,11 @@ import Database.Database;
  * Lấy dữ liệu từ database, cài đặt định danh cột hiển thị
  */
 public class TableDatabase extends AbstractTableModel {
-	ArrayList<String[]> values = new ArrayList<String[]>();
-	Database d;
-	ResultSet result;
-	int colCount;
-	String[] colName;
+	private ArrayList<String[]> values = new ArrayList<String[]>();
+	private Database d;
+	private ResultSet result;
+	private int colCount;
+	private String[] colName;
 
 	/*
 	 * Lấy dữ liệu từ database đưa vào ArrayList values Biến result tr�? lần lượt
@@ -98,6 +98,7 @@ public class TableDatabase extends AbstractTableModel {
 		else if (s.equals("SoLuong")) return "Số lượng";
 		else if (s.equals("MaNhanVien")) return "Mã nhân viên";
 		else if (s.equals("TenNhanVien")) return "Tên nhân viên";
+		else if (s.equals("SoLuong")) return "Số lượng";
 		else return s;
 	}
 	
@@ -108,6 +109,16 @@ public class TableDatabase extends AbstractTableModel {
 	/* Trả ra tên cột đúng của bảng */
 	public String getColumnNameDataBase(int column) {
 		return colName[column];
+	}
+	
+	/* Thêm giá trị mới vào bảng. nhưng không thay đổi database */
+	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		// TODO Auto-generated method stub
+		String[] data = new String[getColumnCount()];
+		data = getValuesRowAt(rowIndex);
+		data[columnIndex] =  aValue+"";
+		values.set(rowIndex, data);
 	}
 	
 	/* Thêm 1 hàng vào database 

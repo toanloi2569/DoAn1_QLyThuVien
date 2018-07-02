@@ -1,4 +1,4 @@
-package Frame;
+package EditFrame;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import Check.CheckInfoInput;
+import DataFrame.Abstract_DataFrame;
 import Database.Database;
 import TableModel.TableDatabase;
 
@@ -93,11 +94,11 @@ public abstract class Abstract_EditFrame {
 	 */
 	public boolean checkInfo() {
 		mess = "";
-		/* Chạy từng cột của bảng, kiểm tra điều kiện đúng đối với từng cột */
+		/* Chạy từng cột của bảng, kiểm tra đi�?u kiện đúng đối với từng cột */
 		for (int i = 0; i < vls.getColumnCount(); i++) {
 			String s = vls.getColumnNameDataBase(i);
 			CheckInfoInput c = new CheckInfoInput(GetInfoTextArea[i].getText());
-			/* Kiểm tra các trường bắt buộc phải được nhập, nếu không nhập thì yêu cầu nhập lại */
+			/* Kiểm tra các trư�?ng bắt buộc phải được nhập, nếu không nhập thì yêu cầu nhập lại */
 			if (s.equals("NgayTra")   || s.equals("TenDocGia") || s.equals("CMND")      || s.equals("NgayMuon")||
 				s.equals("NgayMuon")  || s.equals("NgayHenTra")|| s.equals("TenSach")   || s.equals("SoLuong")||
 				s.equals("MaMuonTra") || s.equals("MaSach")    || s.equals("MaDocGia")  || s.equals("MaNhanVien"))
@@ -107,11 +108,11 @@ public abstract class Abstract_EditFrame {
 					return false;
 				};
 			
-			/* Nếu là các trường bỏ trống thì có thể cho qua */
+			/* Nếu là các trư�?ng b�? trống thì có thể cho qua */
 			if (c.isBlank()) 
 				continue;
 			
-			/* Kiểm tra các id, id phải không được bỏ trống, không cách và có định dạng ID */
+			/* Kiểm tra các id, id phải không được b�? trống, không cách và có định dạng ID */
 			else if (s.equals("MaMuonTra") || s.equals("MaSach")    || s.equals("MaDocGia") || s.equals("MaNhanVien")) {
 				if (c.isNotID() || c.isSpace()) {
 					mess += '\n'+vls.getColumnName(i)+c.getMess();
@@ -119,7 +120,7 @@ public abstract class Abstract_EditFrame {
 				}
 			}
 			
-			/* Kiểm tra các trường text, các trường này chỉ được nhập chữ và space */
+			/* Kiểm tra các trư�?ng text, các trư�?ng này chỉ được nhập chữ và space */
 			else if (s.equals("TenDocGia") || s.equals("QueQuan")   || s.equals("TenTacGia") ||  s.equals("NhaSanXuat")|| 
 					 s.equals("TheLoai") || s.equals("TenNhanVien")) {
 				if (c.isNotAllWord()) {
@@ -128,7 +129,7 @@ public abstract class Abstract_EditFrame {
 				}
 			}
 			
-			/* Kiểm tra các trường ngày tháng, phải thỏa mãn ràng buộc ngày tháng */
+			/* Kiểm tra các trư�?ng ngày tháng, phải th�?a mãn ràng buộc ngày tháng */
 			else if (s.equals("NgaySinh")  || s.equals("NgayTra")   || s.equals("NgayMuon")  || s.equals("NgayHenTra")) {
 				if (c.isNotDate()) {
 					mess += '\n'+vls.getColumnName(i)+c.getMess();
@@ -136,7 +137,7 @@ public abstract class Abstract_EditFrame {
 				}
 			}
 			
-			/* Kiểm tra trường giới tính */
+			/* Kiểm tra trư�?ng giới tính */
 			else if (s.equals("GioiTinh")) {
 				if (c.isNotSex()) {
 					mess += '\n'+vls.getColumnName(i)+c.getMess();
@@ -144,7 +145,7 @@ public abstract class Abstract_EditFrame {
 				}
 			}
 			
-			/* Kiểm tra các trường chỉ được nhập số */
+			/* Kiểm tra các trư�?ng chỉ được nhập số */
 			else if (s.equals("CMND")      || s.equals("TienPhat")  || s.equals("DonGia")    || s.equals("SoLuong") ||
 					 s.equals("NamXuatBan")) {
 				if (c.isNotAllNumber()) {
@@ -153,7 +154,7 @@ public abstract class Abstract_EditFrame {
 				}
 			}
 			
-			/* Kiểm tra trường email */
+			/* Kiểm tra trư�?ng email */
 			else if (s.equals("Email")) {
 				if (c.isNotEmail()) {
 					mess += '\n'+vls.getColumnName(i)+c.getMess();
@@ -161,7 +162,7 @@ public abstract class Abstract_EditFrame {
 				}
 			};
 			
-			/* Kiểm tra trường năm */
+			/* Kiểm tra trư�?ng năm */
 			if (s.equals("NamXuatBan")) 
 				if (c.isNotYear()) {
 					mess += '\n'+vls.getColumnName(i)+c.getMess();

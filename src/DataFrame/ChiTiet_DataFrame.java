@@ -1,13 +1,13 @@
-package Frame;
+package DataFrame;
 
 import Database.Database;
 import TableModel.TableDatabase;
 
-public class ChinhSuaVaTra_DataFrame extends Abstract_DataFrame {
-	private static Database d = new Database("muontra");
+public class ChiTiet_DataFrame extends Abstract_DataFrame{
+	private static Database d = new Database("chitietmuontra");
 	private static TableDatabase vls = new TableDatabase(d);
 
-	public ChinhSuaVaTra_DataFrame() {
+	public ChiTiet_DataFrame() {
 		super(vls);
 		// TODO Auto-generated constructor stub
 	}
@@ -41,5 +41,5 @@ public class ChinhSuaVaTra_DataFrame extends Abstract_DataFrame {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 }

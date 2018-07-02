@@ -1,32 +1,46 @@
-package Frame;
+package SoLuongSach;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import Check.CheckInfoInput;
+import DataFrame.Muon_MTDataFrame;
+import TableModel.TableDatabase;
+import TableModel.TableTemporary;;
+
 /* Hiển thị frame nhập số lượng mượn sách */
-public class SoLuongSach {
-	private JFrame mainFrame;
-	private JPanel mainPanel;
-	private JButton mainButton;
-	private JScrollPane mainScrollPanel;
-	private JPanel[] jPanels;
-	private JTextArea[] jTextAreas;
-	private JTextField[] jTextFields;
-	private String[] data;
+public abstract class Abstract_SoLuongSach {
+	JFrame mainFrame;
+	JPanel mainPanel;
+	JButton mainButton;
+	JScrollPane mainScrollPanel;
+	JPanel[] jPanels;
+	JTextArea[] jTextAreas;
+	JTextField[] jTextFields;
+	String[] data;
+	int[] rows;
+	TableTemporary tvls;
+	TableDatabase vls;
 	
-	public SoLuongSach(String[] data) {
+	public Abstract_SoLuongSach(String[] data, int[] rows, TableDatabase vls, TableTemporary tvls) {
+		this.rows = rows;
+		this.vls = vls;
+		this.tvls = tvls;
 		this.data = data;
 		prepareGUI();
 		setupDisplay();
@@ -78,13 +92,20 @@ public class SoLuongSach {
 			jPanels[i].add(j);
 			mainPanel.add(jPanels[i]);
 		}
-		mainButton = new JButton("Thêm sách");
+		mainButton = new JButton();
 		mainButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		mainPanel.add(mainButton);
 	}
 	
-	/* Khi nhấn vào button, chương trình sẽ duyệt jTextField để lấy số lượng và thêm vào tvls */
-	private void setupActionButton() {
-		
-	}
+	/*Cài đặt sự kiện cho Button */
+	abstract void setupActionButton();
+	
+	/*Thay đổi giá trị bảng Tvls khi cập nhật */
+	abstract void changeValuesInTvls();
+	
+	/*Thay đổi giá trị bảng Vls khi cập nhật */
+	abstract void changeValuesInVls();
+	
+	/* Kiểm tra xem dữ liệu nhập vào có lỗi hoặc vượt quá khả năng cho mượn của sách không ? */
+	abstract boolean isError();
 }

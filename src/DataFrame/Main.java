@@ -1,4 +1,4 @@
-package Frame;
+package DataFrame;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,7 +22,7 @@ public class Main {
 	public static Sach_DataFrame SachFrame = new Sach_DataFrame();
 	public static DocGia_DataFrame DocGiaFrame = new DocGia_DataFrame();
 	public static NhanVien_DataFrame NhanVienFrame = new NhanVien_DataFrame();
-	public static Muon_DataFrame MuonFrame = new Muon_DataFrame();
+	public static Muon_MTDataFrame MuonFrame = new Muon_MTDataFrame();
 	public static ChinhSuaVaTra_DataFrame ChinhSuaVaTraFrame = new ChinhSuaVaTra_DataFrame();
 	public static ChiTiet_DataFrame ChiTietFrame = new ChiTiet_DataFrame();
 
@@ -39,7 +39,7 @@ public class Main {
 	}
 
 	/* Thiết lập hiển thị frame
-	 * 1 jPanel để hiện thị các nút Sách, Nhân Viên, Độc Giả, Mượn Trả, Chi Tiết Mượn Trả
+	 * 1 jPanel để hiện thị các nút Sách, Nhân Viên, �?ộc Giả, Mượn Trả, Chi Tiết Mượn Trả
 	 * 1 jPanel để hiển thị dữ liệu
 	 */
 	public static void prepareGUI() {

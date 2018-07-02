@@ -1,10 +1,11 @@
-package Frame;
+package EditFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import DataFrame.Abstract_DataFrame;
 import TableModel.TableDatabase;
 
 public class Sua_EditFrame extends Abstract_EditFrame{
@@ -27,11 +28,11 @@ public class Sua_EditFrame extends Abstract_EditFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (checkInfo()) {
-					/* Nếu thỏa mãn điều kiện sẽ được hỏi có nhập vào database không */
+					/* Nếu th�?a mãn đi�?u kiện sẽ được h�?i có nhập vào database không */
 //					int click = JOptionPane.showConfirmDialog(null, "Chắc chắn nhập dữ liệu", "Xác nhận nhập dữ liệu",
 //							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 //					
-//					/* Nếu đồng ý nhập, lấy dữ liệu từ text, cho vào String data, rồi truyền vào query */
+//					/* Nếu đồng ý nhập, lấy dữ liệu từ text, cho vào String data, rồi truy�?n vào query */
 //					if (click == JOptionPane.YES_OPTION) {
 						String[] data = new String [vls.getColumnCount()];
 						/* Lấy dữ liệu từ text */
@@ -45,7 +46,7 @@ public class Sua_EditFrame extends Abstract_EditFrame{
 					}
 				} 
 				
-				/* Nếu không thỏa mãn điều kiện, hiện thông báo yêu cầu nhập lại */
+				/* Nếu không th�?a mãn đi�?u kiện, hiện thông báo yêu cầu nhập lại */
 				else {
 					JOptionPane.showMessageDialog(null, "Sửa dữ liệu sai ở cột : "+mess , "", JOptionPane.WARNING_MESSAGE);
 				}
