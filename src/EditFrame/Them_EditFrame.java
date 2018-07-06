@@ -26,27 +26,22 @@ public class Them_EditFrame extends Abstract_EditFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (checkInfo()) {
-					/* Nếu th�?a mãn đi�?u kiện sẽ được h�?i có nhập vào database không */
-//					int click = JOptionPane.showConfirmDialog(null, "Chắc chắn nhập dữ liệu", "Xác nhận nhập dữ liệu",
-//							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-//					
-//					/* Nếu đồng ý nhập, lấy dữ liệu từ text, cho vào String data, rồi truy�?n vào query */
-//					if (click == JOptionPane.YES_OPTION) {
-						String[] data = new String [vls.getColumnCount()];
-						/* Lấy dữ liệu từ text */
-						for (int i = 0; i < vls.getColumnCount(); i++) {
-							if (GetInfoTextArea[i].getText().length() == 0) 
-								data[i] = null;
-							else data[i] = "'"+GetInfoTextArea[i].getText()+"'";	
-//						}
-						
-						if (vls.insertSingleRow(data)) f.resetTableAndInfo();
+					String[] data = new String [vls.getColumnCount()];
+					/* Lấy dữ liệu từ text */
+					for (int i = 0; i < vls.getColumnCount(); i++) {
+						if (GetInfoTextArea[i].getText().length() == 0) 
+							data[i] = null;
+						else data[i] = "'"+GetInfoTextArea[i].getText()+"'";	
 					}
+					/* Thêm vào database */
+					if (vls.insertSingleRow(data)) 
+						f.resetTableAndInfo();			
 				} 
-				
+		
 				/* Nếu không th�?a mãn đi�?u kiện, hiện thông báo yêu cầu nhập lại */
 				else {
-					JOptionPane.showMessageDialog(null, "Thêm dữ liệu sai ở cột : "+mess , "", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Thêm dữ liệu sai ở cột : "+mess , "", 
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

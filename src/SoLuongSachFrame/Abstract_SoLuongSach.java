@@ -1,4 +1,4 @@
-package SoLuongSach;
+package SoLuongSachFrame;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -50,13 +50,14 @@ public abstract class Abstract_SoLuongSach {
 	/* Cài đặt tương đối các đối tượng */
 	private void prepareGUI() {
 		mainFrame = new JFrame("Nhập số lượng từng sách");
-		mainFrame.setSize(450, (data.length < 4) ? data.length*100+30 : 4*120);
+		mainFrame.setSize(450, (data.length < 4) ? data.length*100+60 : 4*120);
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		mainScrollPanel = new JScrollPane(mainPanel);
+		mainScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
 		
 		mainFrame.add(mainScrollPanel);
 		mainFrame.setVisible(true);

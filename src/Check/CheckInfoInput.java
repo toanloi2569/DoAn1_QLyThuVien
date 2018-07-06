@@ -14,6 +14,10 @@ public class CheckInfoInput {
 		InputText = input;
 	}
 	
+	/* Gán giá trị mới cho đối tượng */
+	public void setData(String data) {
+		InputText = data;
+	}
 	/* Kiểm tra xâu có ký tự đặc biệt không */
 	public boolean isSpecialChar() {
 		for (int i = 0; i < InputText.length(); i++) {

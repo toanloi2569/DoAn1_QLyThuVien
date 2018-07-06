@@ -1,4 +1,4 @@
-package SoLuongSach;
+package SoLuongSachFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +29,8 @@ public class ThayDoiSoLuong extends Abstract_SoLuongSach{
 					changeValuesInTvls();
 					vls.fireTableDataChanged();
 					tvls.fireTableDataChanged();
+					
+					mainFrame.setVisible(false);
 				}
 			}
 		});
@@ -49,7 +51,6 @@ public class ThayDoiSoLuong extends Abstract_SoLuongSach{
 					Integer.parseInt((String)tvls.getValueAt(rows[i], 2)) -
 					Integer.parseInt(jTextFields[i].getText());
 			vls.setValueAt(x, posRow, 7 );
-			System.out.println(x);
 		}
 	}
 

@@ -13,10 +13,7 @@ import EditFrame.Them_EditFrame;
 import TableModel.TableDatabase;
 
 public class NhanVien_DataFrame extends Abstract_DataFrame{
-	private static Database d = new Database("nhanvien");
-	private static TableDatabase vls = new TableDatabase(d);
-
-	public NhanVien_DataFrame() {
+	public NhanVien_DataFrame(TableDatabase vls) {
 		super(vls);
 		AddButton_Data.setText("Thêm nhân viên mới");
 		UpdateButton_Information.setText("Sửa thông tin nhân viên");
@@ -77,8 +74,10 @@ public class NhanVien_DataFrame extends Abstract_DataFrame{
 				int click = JOptionPane.showConfirmDialog(null, "Chắc chắn xóa dữ liệu ?", 
 						"", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (click == JOptionPane.YES_OPTION) {
-					 if(vls.deleteSingleRow(getRow)) 
-						 resetTableAndInfo();
+					for (int i = rows.length-1; i >= 0; i--) {
+						if (vls.deleteSingleRow(rows[i]))
+							resetTableAndInfo();
+					}
 				}
 				
 			}
@@ -94,6 +93,7 @@ public class NhanVien_DataFrame extends Abstract_DataFrame{
 		mainTable_Data.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (mainTable_Data.getSelectedRow() != -1) 
+					rows = mainTable_Data.getSelectedRows();
 					getRow = mainTable_Data.getSelectedRow();
 				/* Nếu có ch�?n row thì thông tin hàng đó sẽ hiện lên trên panel Information */
 				setupText_Information();

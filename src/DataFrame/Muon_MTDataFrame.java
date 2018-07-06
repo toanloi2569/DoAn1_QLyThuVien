@@ -5,28 +5,33 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Database.Database;
-import SoLuongSach.Abstract_SoLuongSach;
-import SoLuongSach.ThayDoiSoLuong;
-import SoLuongSach.ThemSach;
+import EditFrame.ThemMT_EditFrame;
+import SoLuongSachFrame.Abstract_SoLuongSach;
+import SoLuongSachFrame.ThayDoiSoLuong;
+import SoLuongSachFrame.ThemSach;
 import TableModel.TableDatabase;
+import TableModel.TableTemporary;
 
-public class Muon_MTDataFrame extends Abstract_MTDataFrame{
-	private static Database d = new Database("Sach");
-	private int[] rows, rowsTemporary;
-	private static TableDatabase vls = new TableDatabase(d);
+public class Muon_MTDataFrame extends Abstract_DataFrame{
+	private int[] rowsTemporary;
 	private static JButton AddTempButton;
 	private static JButton Update2Button_Information;
-	private static int stateCheck = 1;
+	private JScrollPane TableScrollPanel;
+	private JTable TemporaryTable;
 
-	public Muon_MTDataFrame() {
+	public Muon_MTDataFrame(TableDatabase vls) {
 		super(vls);
+		prepareMTGUI();
 		AddButton_Data.setText("Xác nhận mượn sách");
 		UpdateButton_Information.setText("Loại bỏ sách");
 		DeleteButton_Information.setText("Làm mới");
@@ -42,6 +47,19 @@ public class Muon_MTDataFrame extends Abstract_MTDataFrame{
 		
 		buttonPanel.add(Update2Button_Information);
 		SearchPanel_Data.add(AddTempButton);
+	}
+	
+	public void prepareMTGUI() {
+		tvls = new TableTemporary();
+		TemporaryTable = new JTable(tvls);
+		TemporaryTable.getColumnModel().getColumn(0).setMaxWidth(80);
+		TemporaryTable.getColumnModel().getColumn(2).setMaxWidth(62);
+		
+		TableScrollPanel = new JScrollPane(TemporaryTable);
+		TableScrollPanel.setPreferredSize(new Dimension(200, 230));
+		TableScrollPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5),
+				BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Sách mượn")));
+		InformationPanel.add(TableScrollPanel, 1);
 	}
 
 	/* Thêm sự kiện khi nhấn nút thêm sách
@@ -63,6 +81,7 @@ public class Muon_MTDataFrame extends Abstract_MTDataFrame{
 								  "Tên sách : " + (String)vls.getValueAt(rows[i], 1);
 					}
 					ThemSach t  = new ThemSach(data,rows,vls,tvls);
+					rows = null;
 				}
 			}
 		});
@@ -90,17 +109,94 @@ public class Muon_MTDataFrame extends Abstract_MTDataFrame{
 
 	@Override
 	void setupAddButtonAction() {
-		
+		AddButton_Data.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (tvls.getRowCount() <= 0) {
+					JOptionPane.showMessageDialog(null, "Chưa nhập dữ liệu");
+					return;
+				}
+				ThemMT_EditFrame t = new ThemMT_EditFrame(Muon_MTDataFrame.this);
+			}
+		});
 	}
 
+	/* Xóa 1 hoặc nhiều sách */
 	@Override
 	void setupUpdateButtonAction() {
-		
+		UpdateButton_Information.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (rowsTemporary == null || rowsTemporary.length <= 0) {
+					JOptionPane.showMessageDialog(null, "Chưa chọn sách để xóa");
+				}
+				for (int i = rowsTemporary.length-1; i >= 0; i--) {
+					/* Tìm row tương ứng trong vls */
+					int posRow = getPosRow(i);
+					int x = Integer.parseInt((String)vls.getValueAt(posRow, 7)) + 
+							Integer.parseInt((String)tvls.getValueAt(rowsTemporary[i], 2));
+					vls.setValueAt(x, posRow, 7 );
+					tvls.deleteSingleValue(rowsTemporary[i]);
+				}
+				vls.fireTableDataChanged();
+				tvls.fireTableDataChanged();
+			}
+		});
 	}
 
+	/* Xóa tất cả giá trị trong bảng tvls */
 	@Override
 	void setupDeleteButtonAction() {
-		
+		DeleteButton_Information.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (tvls == null || tvls.getRowCount() <= 0) return;
+				/* Chọn tất cả các dòng, đưa vào rowsTemporary rồi xóa từng dòng */
+				selectAllTemporaryTable();
+				int click = JOptionPane.showConfirmDialog(null, "Đồng ý xóa ?","",JOptionPane.YES_NO_OPTION);
+				if (click == JOptionPane.YES_OPTION) {
+					/* Duyệt toàn bộ, tìm row tương ứng trong vls để thay đổi */
+					for (int i = tvls.getRowCount()-1; i >= 0; i--) {
+						int posRow = getPosRow(i);
+						int x = Integer.parseInt((String)vls.getValueAt(posRow, 7)) + 
+								Integer.parseInt((String)tvls.getValueAt(rowsTemporary[i], 2));
+						vls.setValueAt(x, posRow, 7 );
+						tvls.deleteSingleValue(rowsTemporary[i]);
+					}
+					vls.fireTableDataChanged();
+					tvls.fireTableDataChanged();
+				}
+				rowsTemporary = null;
+			}
+		});
+	}
+
+	/* Tìm kiếm vị trí row tương ứng với row được chọn trong bảng vls 
+	 * input : vị trí row trong bảng tvls 
+	 * output : vị trí row tương ứng trong bảng vls
+	 */
+	private int getPosRow(int i) {
+		for (int j = 0; j < vls.getRowCount(); j++) 
+			if (vls.getValueAt(j, 0).equals(tvls.getValueAt(rowsTemporary[i], 0))) {
+				return j;
+			}
+		return 0;
+	}
+	
+	private void selectAllTemporaryTable() {
+		rowsTemporary = new int[tvls.getRowCount()];
+		for (int i = 0; i < tvls.getRowCount(); i++) 
+			rowsTemporary[i] = i;
+	}
+	
+	/* Lấy dữ liệu bảng Temporary */
+	public TableTemporary getTemporaryTable(){
+		return tvls;
+	}
+	
+	/* Lấy dữ liệu trong bảng DataTable */
+	public TableDatabase getDatabaseTable() {
+		return vls;
 	}
 	
 	/* Thêm sự kiện khi ấn update2Button, cho phép ngư�?i dùng sửa số sách mượn */
@@ -119,6 +215,7 @@ public class Muon_MTDataFrame extends Abstract_MTDataFrame{
 							  "Tên sách : " + (String)tvls.getValueAt(rowsTemporary[i], 1);
 				}
 				ThayDoiSoLuong t  = new ThayDoiSoLuong(data,rowsTemporary,vls,tvls);
+				rowsTemporary = null;
 			}
 		});
 	}
@@ -129,10 +226,11 @@ public class Muon_MTDataFrame extends Abstract_MTDataFrame{
 	@Override
 	void setupClickTable() {
 		mainTable_Data.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				rows = mainTable_Data.getSelectedRows();
-				if (mainTable_Data.getSelectedRow() != -1) 
+			public void valueChanged(ListSelectionEvent e) {	
+				if (mainTable_Data.getSelectedRow() != -1) {
 					getRow = mainTable_Data.getSelectedRow();
+					rows = mainTable_Data.getSelectedRows();
+				}
 				/* Nếu có ch�?n row thì thông tin hàng đó sẽ hiện lên trên panel Information */
 				setupText_Information();
 			}
@@ -148,5 +246,4 @@ public class Muon_MTDataFrame extends Abstract_MTDataFrame{
 			}
 		});
 	}
-
 }

@@ -13,10 +13,7 @@ import EditFrame.Them_EditFrame;
 import TableModel.TableDatabase;
 
 public class Sach_DataFrame extends Abstract_DataFrame{
-	private static Database d = new Database("sach");
-	private static TableDatabase vls = new TableDatabase(d);
-
-	public Sach_DataFrame() {
+	public Sach_DataFrame(TableDatabase vls) {
 		super(vls);
 		AddButton_Data.setText("Thêm sách mới");
 		UpdateButton_Information.setText("Sửa dữ liệu sách");
@@ -53,10 +50,11 @@ public class Sach_DataFrame extends Abstract_DataFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (getRow == -1) {
-					JOptionPane.showMessageDialog(null, "Chưa ch�?n dữ liệu để thay đổi");
+					JOptionPane.showMessageDialog(null, "Chưa chọn dữ liệu để thay đổi");
 					return;
 				}
 				Sua_EditFrame a = new Sua_EditFrame(vls,Sach_DataFrame.this);
+				
 			}
 		});
 	}
@@ -72,14 +70,16 @@ public class Sach_DataFrame extends Abstract_DataFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (getRow == -1) {
-					JOptionPane.showMessageDialog(null, "Chưa ch�?n dữ liệu để xóa");
+					JOptionPane.showMessageDialog(null, "Chưa chọn dữ liệu để xóa");
 					return;
 				}
 				int click = JOptionPane.showConfirmDialog(null, "Chắc chắn xóa dữ liệu ?", 
 						"", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (click == JOptionPane.YES_OPTION) {
-					 if(vls.deleteSingleRow(getRow)) 
-						 resetTableAndInfo();
+					for (int i = rows.length-1; i >= 0; i--) {
+						if (vls.deleteSingleRow(rows[i]))
+							resetTableAndInfo();
+					}
 				}
 			}
 		});
@@ -94,6 +94,7 @@ public class Sach_DataFrame extends Abstract_DataFrame{
 		mainTable_Data.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (mainTable_Data.getSelectedRow() != -1) 
+					rows = mainTable_Data.getSelectedRows();
 					getRow = mainTable_Data.getSelectedRow();
 				/* Nếu có ch�?n row thì thông tin hàng đó sẽ hiện lên trên panel Information */
 				setupText_Information();

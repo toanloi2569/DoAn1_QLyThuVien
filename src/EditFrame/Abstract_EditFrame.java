@@ -22,6 +22,7 @@ import TableModel.TableDatabase;
 public abstract class Abstract_EditFrame {
 	JFrame mainFrame;
 	JTextField[] GetInfoTextArea;
+	JScrollPane[] jScrollPanes;
 	JButton jButton;
 	JLabel[] jLabels;
 	TableDatabase vls;
@@ -68,7 +69,7 @@ public abstract class Abstract_EditFrame {
 	/* Thêm các ô để nhập dữ liệu vào trong Frame */
 	private void addTextAreas() {
 		jLabels = new JLabel[vls.getColumnCount()];
-		JScrollPane[] jScrollPanes = new JScrollPane[vls.getColumnCount()];
+		jScrollPanes = new JScrollPane[vls.getColumnCount()];
 		/* Thiết kế các ô để nhập dữ liệu */
 		GetInfoTextArea = new JTextField[vls.getColumnCount()];
 		for (int i = 0; i < vls.getColumnCount(); i++) {
@@ -101,9 +102,8 @@ public abstract class Abstract_EditFrame {
 			/* Kiểm tra các trư�?ng bắt buộc phải được nhập, nếu không nhập thì yêu cầu nhập lại */
 			if (s.equals("NgayTra")   || s.equals("TenDocGia") || s.equals("CMND")      || s.equals("NgayMuon")||
 				s.equals("NgayMuon")  || s.equals("NgayHenTra")|| s.equals("TenSach")   || s.equals("SoLuong")||
-				s.equals("MaMuonTra") || s.equals("MaSach")    || s.equals("MaDocGia")  || s.equals("MaNhanVien"))
+				s.equals("MaSach")    || s.equals("MaDocGia")  || s.equals("MaNhanVien"))
 				if (c.isBlank()) {
-					
 					mess += '\n'+vls.getColumnName(i)+c.getMess();
 					return false;
 				};
@@ -113,7 +113,7 @@ public abstract class Abstract_EditFrame {
 				continue;
 			
 			/* Kiểm tra các id, id phải không được b�? trống, không cách và có định dạng ID */
-			else if (s.equals("MaMuonTra") || s.equals("MaSach")    || s.equals("MaDocGia") || s.equals("MaNhanVien")) {
+			else if (s.equals("MaSach")    || s.equals("MaDocGia") || s.equals("MaNhanVien")) {
 				if (c.isNotID() || c.isSpace()) {
 					mess += '\n'+vls.getColumnName(i)+c.getMess();
 					return false;

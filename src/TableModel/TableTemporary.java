@@ -54,4 +54,14 @@ public class TableTemporary extends AbstractTableModel{
 	public void addSingleValue(String[] data) {
 		values.add(data);
 	}
+	
+	/* Xóa 1 dòng */
+	public void deleteSingleValue(int row) {
+		values.remove(row);
+	}
+	
+	/* Xóa hết các giá trị trong bảng */
+	public void deleteAllValue() {
+		values.clear();
+	}
 }

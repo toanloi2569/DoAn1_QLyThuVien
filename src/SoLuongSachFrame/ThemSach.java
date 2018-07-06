@@ -1,4 +1,4 @@
-package SoLuongSach;
+package SoLuongSachFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +32,7 @@ public class ThemSach extends Abstract_SoLuongSach{
 					changeValuesInTvls();	
 					tvls.fireTableDataChanged();
 					vls.fireTableDataChanged();
+					mainFrame.setVisible(false);
 				}
 			}
 		});

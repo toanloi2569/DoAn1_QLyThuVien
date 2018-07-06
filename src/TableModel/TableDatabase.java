@@ -28,20 +28,15 @@ public class TableDatabase extends AbstractTableModel {
 		this.d = d;
 		result = d.getResultSet();
 		getInformationData();
-		try {
-			while (result.next()) {
-				String[] valuesRow = new String[colCount + 1];
-				for (int i = 0; i <= colCount - 1; i++) {
-					valuesRow[i] = result.getString(i + 1);
-				}
-				values.add(valuesRow);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		display(result);
 	}
 
+	public TableDatabase() {
+		this.d = new Database("chitietmuontra");
+		result = d.getResultSet();
+		getInformationData();
+	}
+	
 	/* Lấy các thông tin v�? MetaData : Số column, Tên hiển thị của các column */
 	public void getInformationData() {
 		try {
@@ -102,8 +97,12 @@ public class TableDatabase extends AbstractTableModel {
 		else return s;
 	}
 	
+	/* Lấy giá trị cả row truyền vào */
 	public String[] getValuesRowAt(int row) {
-		return values.get(row);
+		String[] result = new String[getColumnCount()];
+		for (int i = 0; i < result.length; i++)
+			result[i] = (String) getValueAt(row, i);
+		return result;
 	}
 	
 	/* Trả ra tên cột đúng của bảng */
@@ -111,14 +110,51 @@ public class TableDatabase extends AbstractTableModel {
 		return colName[column];
 	}
 	
+	/* Xóa toàn bộ giá trị hiện tại trong bảng */
+	public void deleteAllValues() {
+		values.clear();
+	}
+	
 	/* Thêm giá trị mới vào bảng. nhưng không thay đổi database */
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub
-		String[] data = new String[getColumnCount()];
+		String[] data = new String[getColumnCount()+1];
 		data = getValuesRowAt(rowIndex);
 		data[columnIndex] =  aValue+"";
 		values.set(rowIndex, data);
+	}
+	
+	/* Tìm kiếm giá trị truyền vào trong database, trả ra 1 resultSet */
+	public ResultSet searchOnDatabase(String inputText) {
+		result = d.search(inputText);
+		return result;
+	}
+	
+	/* Tìm kiếm vị trí 1 rows trong bảng qua khóa chính */
+	public int search(String pk, int posPK) {
+		for (int i = 0; i < values.size(); i++) {
+			if (values.get(i)[posPK].equals(pk))
+				return i;
+		}
+		return -1;
+	}
+	
+	/* Truyền vào 1 resultSet, hiển thị giá trị trong result đấy */
+	public void display(ResultSet resultSet) {
+		result = resultSet;
+		try {
+			while (result.next()) {
+				String[] valuesRow = new String[colCount + 1];
+				for (int i = 0; i <= colCount - 1; i++) {
+					valuesRow[i] = result.getString(i + 1);
+				}
+				values.add(valuesRow);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/* Thêm 1 hàng vào database 
@@ -143,10 +179,11 @@ public class TableDatabase extends AbstractTableModel {
 		String pk1 = (String) getValueAt(row, 0);
 		String pk2 = (String) getValueAt(row, 1);
 		if (d.updateRow(pk1, pk2, data)) {
+			String[] d = new String[getColumnCount()+1];
 			for (int i = 0; i < data.length; i++) 
 				if (data[i] != null)
-					data[i] = data[i].substring(1, data[i].length()-1);
-			values.set(row, data);
+					d[i] = data[i].substring(1, data[i].length()-1);
+			values.set(row, d);
 			return true;
 		}
 		else return false;
@@ -164,4 +201,11 @@ public class TableDatabase extends AbstractTableModel {
 		}
 		else return false;
 	}
+	
+	public void show(int row){
+		for (String string : values.get(row)) {
+			System.out.println(string);
+		}
+	}
+	
 }

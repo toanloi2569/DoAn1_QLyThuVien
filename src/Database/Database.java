@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 
 import javax.swing.JOptionPane;
@@ -27,7 +28,7 @@ public class Database {
 
 			// Tạo đối tượng Connection
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ThuVien", "root", "2569");
-
+		
 			// Tạo đối tượng Statement
 			stmt = con.createStatement();
 			
@@ -51,6 +52,24 @@ public class Database {
 		return result;
 	}
 	
+	/* Trả ra resultSet trỏ vào bảng được tìm thấy */
+	public ResultSet search(String inputText) {
+		ResultSet result = null;
+		ResultSet r = getResultSet();
+		String sql = "select * from " + tableName + "\nwhere "; 
+		try {
+			for (int i = 1; i <= r.getMetaData().getColumnCount(); i++) {
+				sql += r.getMetaData().getColumnName(i) + " like " + "'%" + inputText + "%' or\n ";
+			}
+			sql = sql.substring(0,sql.length()-1-4);
+			result = stmt.executeQuery(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	/* Thêm 1 row vào database, trả ra true nếu thêm thành công
 	 * Input : 1 mảng data[] các giá trị cần thêm và 1 bảng lưu database hiện tại
 	 * Output : Thêm data[] vào database 
@@ -62,18 +81,16 @@ public class Database {
 		try {
 			for (int i = 0; i < result.getMetaData().getColumnCount(); i++) 
 				s += data[i] + ","; 
-			stmt.executeUpdate(
-				"insert into " + tableName +  
-				" values (" + s.substring(0,s.length()-1) +")" 
-			);
+			stmt.execute("insert into " + tableName + " values (" + s.substring(0,s.length()-1) +")");
 			return true;
+		} catch (SQLIntegrityConstraintViolationException e1) {
+			JOptionPane.showMessageDialog(null, "Trùng ID hoặc không tồn tại ID, thay đổi ID để tiếp tục");
+			e1.printStackTrace();
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, 
-					"Lỗi dữ liệu nhập vào" ,
-					"", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Lỗi dữ liệu nhập vào");
 			e.printStackTrace();
-			return false;
 		}
+		return false;
 	}
 	
 	/* Thay đổi 1 row trong database, trả ra true nếu thành công
@@ -85,21 +102,19 @@ public class Database {
 		String s = "update " + tableName + " set\n ";
 		ResultSet result = getResultSet();
 		try {
-		ResultSetMetaData m = result.getMetaData();
-		for (int i = 1; i <= m.getColumnCount(); i++) {
-			s += m.getColumnName(i) + "=" + data[i-1]; 
-			if (i < m.getColumnCount()) s += ",\n"; 
-			else s += "\n";
-		}
-		s += "where\n " + m.getColumnName(1) + "='" + pk1 + "' and\n"
-				   		+ m.getColumnName(2) + "='" + pk2 + "';";
-	
+			ResultSetMetaData m = result.getMetaData();
+			for (int i = 1; i <= m.getColumnCount(); i++) {
+				s += m.getColumnName(i) + "=" + data[i-1]; 
+				if (i < m.getColumnCount()) s += ",\n"; 
+				else s += "\n";
+			}
+			s += "where\n " + m.getColumnName(1) + "='" + pk1 + "' and\n"
+					+ m.getColumnName(2) + "='" + pk2 + "';";
+			
 			stmt.executeUpdate(s);
 			return true;
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, 
-					"Lỗi dữ liệu nhập vào" ,
-					"", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Lỗi dữ liệu nhập vào");
 			e.printStackTrace();
 			return false;
 		}
@@ -118,24 +133,12 @@ public class Database {
 			   + m.getColumnName(2) + "=" + pk2 + ";";
 			stmt.executeUpdate(s);
 			return true;
+		} catch (SQLIntegrityConstraintViolationException e1) {
+			JOptionPane.showMessageDialog(null, "Độc giả (Sách) đang mượn (được mượn), không thể xóa");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, 
-					"Xóa không thành công" ,
-					"", JOptionPane.WARNING_MESSAGE);
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	/* Đóng liên kết */
-	public void close() {
-		try {
-			con.close();
-			stmt.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Xóa không thành công");
 			e.printStackTrace();
 		}
+		return false;
 	}
 }

@@ -24,6 +24,7 @@ import javax.swing.event.ListSelectionListener;
 
 import Database.Database;
 import TableModel.TableDatabase;
+import TableModel.TableTemporary;
 
 /*
  *	Frame có 2 phần chính là DisplayDataPanel và InformationPanel
@@ -33,12 +34,13 @@ import TableModel.TableDatabase;
  * 	+ Imformation hiển thị thông tin chi tiết của từng Row ch�?n
  */
 public abstract class Abstract_DataFrame extends JPanel{
-	private final int mainFrameWidth = 1300;
-	private final int mainFrameHeight = 600;
-	private final int DataPanelWidth = (int) (0.7 * mainFrameWidth);
-//	private Database d;
-	private TableDatabase vls;
+	final int mainFrameWidth = 1300;
+	final int mainFrameHeight = 600;
+	final int DataPanelWidth = (int) (0.7 * mainFrameWidth);
+	TableTemporary tvls;
+	TableDatabase vls;
 	public static int getRow = -1;
+	public static int[] rows;
 	JLabel SearchLabel;
 	JTable mainTable_Data;
 
@@ -224,7 +226,7 @@ public abstract class Abstract_DataFrame extends JPanel{
 	public void setupText_Information() {
 		/* Duyệt các cột của table để lấy tên các row, sau đó in vào text area */
 		TextArea_Information.setText("");
-		if (getRow != -1) {
+		if (getRow != -1 && getRow < vls.getRowCount() ) {
 			for (int i = 0; i < vls.getColumnCount(); i++) 
 				if (vls.getValueAt(getRow, i) != null) 
 					TextArea_Information.append(vls.getColumnName(i) +" : "+ vls.getValueAt(getRow, i)+"\n\n");	
