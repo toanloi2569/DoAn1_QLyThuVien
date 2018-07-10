@@ -12,14 +12,14 @@ import TableModel.TableDatabase;
 import TableModel.TableTemporary;
 
 /* Sử dụng khi ấn "Xác nhận mượn sách" trong frame mượn sách */
-public class ThemMT_EditFrame extends Them_EditFrame {
+public class MuonMT_EditFrame extends Them_EditFrame {
 
 	static TableDatabase vlsMuonTra = Main.vlsMuonTra;
 	static TableDatabase vlsChiTiet = Main.vlsChiTiet;
 	TableDatabase vlsSach;
 	TableTemporary tvls;
 
-	public ThemMT_EditFrame(Muon_MTDataFrame f) {
+	public MuonMT_EditFrame(Muon_MTDataFrame f) {
 		super(vlsMuonTra, f);
 		this.vlsSach = f.getDatabaseTable();
 		this.tvls = f.getTemporaryTable();

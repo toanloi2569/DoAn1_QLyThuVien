@@ -101,5 +101,11 @@ public class DocGia_DataFrame extends Abstract_DataFrame{
 			}
 		});
 	}
+
+	@Override
+	void displayDuLieu() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

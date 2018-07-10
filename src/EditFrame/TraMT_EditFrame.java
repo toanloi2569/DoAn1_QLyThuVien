@@ -96,6 +96,7 @@ public class TraMT_EditFrame extends Abstract_EditFrame{
 				/* Thêm vào database, đồng thời sửa lại database bảng sách */
 				updateSach();
 				updateChiTiet();
+				mainFrame.setVisible(false);
 			}
 		});
 		

@@ -3,7 +3,10 @@ package EditFrame;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -34,6 +37,7 @@ public abstract class Abstract_EditFrame {
 
 		/* Thêm vị trí tương đối trong frame */
 		prepareGUI();
+		mainFrame.getRootPane().setDefaultButton(jButton);
 
 		/* Cài đặt sự kiện khi nhấn thêm hoặc sửa */
 		setAction();

@@ -1,12 +1,16 @@
 package DataFrame;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -23,12 +27,12 @@ public class Tra_DataFrame extends Abstract_DataFrame {
 		AddButton_Data.setText("Xem chi tiết mượn");
 		TableScrollPanel_Data.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(),
 				"Mượn trả", TitledBorder.CENTER, TitledBorder.TOP));
-		this.setPreferredSize(new Dimension(Main.mainFrameWidth/2-200, mainFrameHeight));
+		this.setPreferredSize(new Dimension(Main.mainFrameWidth/2-150, mainFrameHeight));
 	}
 
 	@Override
 	void setupTable() {
-		
+	
 	}
 
 	/*  
@@ -39,7 +43,7 @@ public class Tra_DataFrame extends Abstract_DataFrame {
 		AddButton_Data.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				displayChiTiet();
+				displayDuLieu();
 			}
 		});
 	}
@@ -55,18 +59,19 @@ public class Tra_DataFrame extends Abstract_DataFrame {
 		});
 	}
 	
+
 	/*Xóa bảng chi tiết mượn trả hiện tại
 	 * Gọi hàm search để lấy result set bảng chứa các giá trị tương ứng
 	 * Gọi display để in bảng ra màn hình 
 	 * In kết quả ra bảng chi tiết mượn trả
 	 */
-	void displayChiTiet(){
+	void displayDuLieu(){
 		/* Kiểm tra đã chọn mã mượn trả chưa */
 		if (getRow < 0) {
 			JOptionPane.showMessageDialog(null, "Chưa chọn mã mượn trả để hiện thị chi tiết");
 			return;
 		}
-			
+		
 		/* Xóa bảng chi tiết mượn trả hiện tại */
 		Main.vlsChiTiet.deleteAllValues();
 		Main.vlsChiTiet.fireTableDataChanged();

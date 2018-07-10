@@ -1,11 +1,15 @@
 package DataFrame;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -26,7 +30,11 @@ public class ChiTiet_DataFrame extends Abstract_DataFrame{
 
 	@Override
 	void setupTable() {
-		
+		mainTable_Data.getColumnModel().getColumn(0).setPreferredWidth(80);
+		mainTable_Data.getColumnModel().getColumn(1).setPreferredWidth(60);
+		mainTable_Data.getColumnModel().getColumn(3).setPreferredWidth(100);
+		mainTable_Data.getColumnModel().getColumn(5).setPreferredWidth(25);
+		mainTable_Data.getColumnModel().getColumn(4).setPreferredWidth(240);
 	}
 
 	/* Hiển thị 1 bảng để trả sách 
@@ -40,11 +48,7 @@ public class ChiTiet_DataFrame extends Abstract_DataFrame{
 				 * Tự động tính ngày hiện tại và tiền phạt
 				 * Ngày trả không được để trống
 				 */
-				if (getRow < 0) {
-					JOptionPane.showMessageDialog(null, "Chưa chọn sách trả");
-					return;
-				}
-				TraMT_EditFrame t = new TraMT_EditFrame(vls, ChiTiet_DataFrame.this, Main.TraFrame);
+				displayDuLieu();
 			}
 		});
 	}
@@ -70,5 +74,22 @@ public class ChiTiet_DataFrame extends Abstract_DataFrame{
 					getRow = mainTable_Data.getSelectedRow();
 			}
 		});	
+	}
+	
+	/* Hiển thị chi tiết mượn trả để tiến hành trả sách */
+	void displayDuLieu(){
+		/* Kiểm tra có dòng nào được chọn hay không */
+		if (getRow < 0) {
+			JOptionPane.showMessageDialog(null, "Chưa chọn sách trả");
+			return;
+		}
+		
+		/* Kiểm tra sách đã trả hay chưa */
+		if (vls.getValueAt(getRow, 2) != null) {
+			JOptionPane.showMessageDialog(null, "Sách đã trả");
+			return;
+		}
+			
+		TraMT_EditFrame t = new TraMT_EditFrame(vls, ChiTiet_DataFrame.this, Main.TraFrame);
 	}
 }

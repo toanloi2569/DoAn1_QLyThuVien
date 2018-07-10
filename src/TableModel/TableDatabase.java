@@ -26,7 +26,7 @@ public class TableDatabase extends AbstractTableModel {
 	 */
 	public TableDatabase(Database d) {
 		this.d = d;
-		result = d.getResultSet();
+		result = getAllData();
 		getInformationData();
 		display(result);
 	}
@@ -128,6 +128,12 @@ public class TableDatabase extends AbstractTableModel {
 	/* Tìm kiếm giá trị truyền vào trong database, trả ra 1 resultSet */
 	public ResultSet searchOnDatabase(String inputText) {
 		result = d.search(inputText);
+		return result;
+	}
+	
+	/* Hiển thị tất cả các giá trị trong database */
+	public ResultSet getAllData(){
+		result = d.getResultSet();
 		return result;
 	}
 	

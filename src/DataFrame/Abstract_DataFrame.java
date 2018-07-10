@@ -1,12 +1,18 @@
 package DataFrame;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -47,7 +53,10 @@ public abstract class Abstract_DataFrame extends JPanel{
 	/* Thành phần DataPanel */
 	JPanel DataPanel;
 	JPanel SearchPanel_Data, DisplayPanel_Data;
-	JButton DisplayAllButton_Data, SearchButton_Data, AdvSearchButton_Data, AddButton_Data;
+	JPanel DisplayAllPanel_Data;
+	JPanel AddPanel_Data;
+	JTextField SearchText_Data;
+	JButton DisplayAllButton_Data, SearchButton_Data, AddButton_Data;
 	JScrollPane TableScrollPanel_Data;
 
 	/* Thành phần InformationPanel */
@@ -81,6 +90,10 @@ public abstract class Abstract_DataFrame extends JPanel{
 		setupUpdateButtonAction();
 		setupDeleteButtonAction();
 		setupClickTable();
+		setupSearchButtonAction();
+		setupSearchTextAction();
+		setupDoubleClickAction();
+		setupDisplayAllButtonAction();
 	}
 
 	/*
@@ -133,6 +146,17 @@ public abstract class Abstract_DataFrame extends JPanel{
 	 * table hiển thị data 1 button để thêm dữ liệu
 	 */
 	private void addDisplayPanel_Data() {
+		
+		/* button hiển thị toàn bộ dữ liệu */
+		DisplayAllButton_Data = new JButton("Hiển thị toàn bộ dữ liệu");
+		DisplayAllButton_Data.setPreferredSize(new Dimension(150, 22));
+		DisplayAllButton_Data.setMargin(new Insets(0, 0, 0, 0));
+		DisplayAllButton_Data.setAlignmentX(Component.LEFT_ALIGNMENT);
+		DisplayAllPanel_Data = new JPanel();
+		DisplayAllPanel_Data.setLayout(new BorderLayout());
+		DisplayAllPanel_Data.add(DisplayAllButton_Data,BorderLayout.WEST);
+		DisplayAllPanel_Data.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
 		/* Cài đặt hiển thị displayPanel */
 		DisplayPanel_Data = new JPanel();
 		DisplayPanel_Data.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
@@ -150,15 +174,19 @@ public abstract class Abstract_DataFrame extends JPanel{
 
 		/* button thêm dữ liệu */
 		AddButton_Data = new JButton();
+		AddPanel_Data = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		AddPanel_Data.add(AddButton_Data);
+		AddPanel_Data.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		/* add các com vào displayPanel */
+		DisplayPanel_Data.add(DisplayAllPanel_Data);
 		DisplayPanel_Data.add(TableScrollPanel_Data);
-		DisplayPanel_Data.add(AddButton_Data);
+		DisplayPanel_Data.add(AddPanel_Data);
 	}
 
 	/*
 	 * Thêm vị trí tương đối searchPanel 
-	 * Gồm 1 button hiển thị toàn bộ dữ liệu và 1 button tìm kiếm
+	 * Gồm  1 button tìm kiếm, 1 thanh tìm kiếm 
 	 */
 	private void addSearchPanel_Data() {
 		/* Cài đặt hiển thị searchPanel */
@@ -166,21 +194,20 @@ public abstract class Abstract_DataFrame extends JPanel{
 		SearchPanel_Data.setPreferredSize(new Dimension(DataPanelWidth, 30));
 		SearchPanel_Data.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		SearchPanel_Data.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+		/* button tìm kiếm */
+		SearchButton_Data = new JButton("Tìm kiếm");
+		SearchButton_Data.setPreferredSize(new Dimension(100, 22));
+		SearchButton_Data.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+		/* Thanh tìm kiếm */
+		SearchText_Data = new JTextField();
+		SearchText_Data.setPreferredSize(new Dimension(240, 22));
 		
-		/* button hiển thị toàn bộ dữ liệu */
-		DisplayAllButton_Data = new JButton("Hiển thị toàn bộ dữ liệu");
-		DisplayAllButton_Data.setPreferredSize(new Dimension(200, 22));
-		DisplayAllButton_Data.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-		/* button tìm kiếm nâng cao */
-		AdvSearchButton_Data = new JButton("Tìm kiếm");
-		AdvSearchButton_Data.setPreferredSize(new Dimension(100, 22));
-//		AdvSearchButton_Data.setMargin(new Insets(0, 12, 0, 12));
-		AdvSearchButton_Data.setAlignmentX(Component.LEFT_ALIGNMENT);
-
 		/* add com vào searchPanel */
-		SearchPanel_Data.add(DisplayAllButton_Data);
-		SearchPanel_Data.add(AdvSearchButton_Data);
+		SearchPanel_Data.add(new JLabel("Tìm kiếm : "));
+		SearchPanel_Data.add(SearchText_Data);
+		SearchPanel_Data.add(SearchButton_Data);	
 	}
 
 	/* Thêm vị trí tương đối của InformationPanel 
@@ -241,6 +268,68 @@ public abstract class Abstract_DataFrame extends JPanel{
 		vls.fireTableDataChanged();
 		setupText_Information();
 	}
+	
+	/* Cài đặt sự kiện khi double click vào bảng */
+	public void setupDoubleClickAction(){
+		mainTable_Data.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				JTable table = (JTable)e.getSource();
+				Point point = e.getPoint();
+				getRow = table.rowAtPoint(point);
+				if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
+					displayDuLieu();
+				}
+			}
+		});
+	}
+	
+	/* Khi ấn enter, sẽ tìm kiếm text đã nhập trong database */
+	void setupSearchTextAction(){
+		SearchText_Data.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				displayResultSearch();
+			}
+		});
+	}
+	
+	/* Khi ấn tìm kiếm, sẽ tìm kiếm text đã nhập trong database */
+	void setupSearchButtonAction(){
+		SearchButton_Data.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				displayResultSearch();
+			}
+		});		
+	}
+	
+	/* Hiển thị toàn bộ dữ liệu trong database */
+	void setupDisplayAllButtonAction(){
+		DisplayAllButton_Data.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				vls.deleteAllValues();
+				vls.display(vls.getAllData());
+				vls.fireTableDataChanged();
+			}
+		});
+	}
+	
+	/* Hiển thị giá trị tìm kiếm được trong bảng */
+	void displayResultSearch(){
+		/* Xóa tất cả các hiển thị trong bảng */
+		vls.deleteAllValues();
+		
+		/* Tìm kiếm text trong database và hiển thị */
+		String text = SearchText_Data.getText();
+		ResultSet result = vls.searchOnDatabase(text);
+		vls.display(result);
+		vls.fireTableDataChanged();
+	}
+	
+	/* Hành động khi double click vào table */
+	abstract void displayDuLieu();
 	
 	/* Thay đổi độ rộng bảng cho phù hợp */
 	abstract void setupTable();

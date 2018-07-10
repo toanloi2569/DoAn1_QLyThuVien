@@ -100,5 +100,11 @@ public class NhanVien_DataFrame extends Abstract_DataFrame{
 			}
 		});
 	}
+
+	@Override
+	void displayDuLieu() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

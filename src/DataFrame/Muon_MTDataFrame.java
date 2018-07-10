@@ -1,13 +1,18 @@
 package DataFrame;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -15,7 +20,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Database.Database;
-import EditFrame.ThemMT_EditFrame;
+import EditFrame.MuonMT_EditFrame;
 import SoLuongSachFrame.Abstract_SoLuongSach;
 import SoLuongSachFrame.ThayDoiSoLuong;
 import SoLuongSachFrame.ThemSach;
@@ -46,7 +51,7 @@ public class Muon_MTDataFrame extends Abstract_DataFrame{
 		setupUpdate2ButtonAction();
 		
 		buttonPanel.add(Update2Button_Information);
-		SearchPanel_Data.add(AddTempButton);
+		DisplayAllPanel_Data.add(AddTempButton,BorderLayout.LINE_END);
 	}
 	
 	public void prepareMTGUI() {
@@ -116,11 +121,11 @@ public class Muon_MTDataFrame extends Abstract_DataFrame{
 					JOptionPane.showMessageDialog(null, "Chưa nhập dữ liệu");
 					return;
 				}
-				ThemMT_EditFrame t = new ThemMT_EditFrame(Muon_MTDataFrame.this);
+				MuonMT_EditFrame t = new MuonMT_EditFrame(Muon_MTDataFrame.this);
 			}
 		});
 	}
-
+	
 	/* Xóa 1 hoặc nhiều sách */
 	@Override
 	void setupUpdateButtonAction() {
@@ -245,5 +250,23 @@ public class Muon_MTDataFrame extends Abstract_DataFrame{
 				rowsTemporary = TemporaryTable.getSelectedRows();
 			}
 		});
+	}
+
+	/* Hành động khi double click vào bảng */
+	@Override
+	void displayDuLieu() {
+		if (null == rows || rows.length <= 0 ) {
+			JOptionPane.showMessageDialog(null, "Chưa chọn sách để nhập");
+			return;
+		}
+		if (!isDuplicate()) {
+			String [] data = new String[rows.length];
+			for (int i = 0; i < rows.length; i++) {
+				data[i] = "Mã sách : " + (String)vls.getValueAt(rows[i], 0) + "\n" + 
+						  "Tên sách : " + (String)vls.getValueAt(rows[i], 1);
+			}
+			ThemSach t  = new ThemSach(data,rows,vls,tvls);
+			rows = null;
+		}
 	}
 }
