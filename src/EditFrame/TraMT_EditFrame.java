@@ -18,15 +18,15 @@ import Check.CheckInfoInput;
 import DataFrame.ChiTiet_DataFrame;
 import DataFrame.Main;
 import DataFrame.Tra_DataFrame;
-import TableModel.TableDatabase;
+import TableModel.DatabaseTable;
 
 public class TraMT_EditFrame extends Abstract_EditFrame{
-	private TableDatabase vlsMuonTra = Main.vlsMuonTra;
+	private DatabaseTable vlsMuonTra = Main.vlsMuonTra;
 	private Tra_DataFrame fTra;
 	private JButton AutoCal;
 	private CheckInfoInput c = new CheckInfoInput("");
 
-	public TraMT_EditFrame(TableDatabase vls, ChiTiet_DataFrame f, Tra_DataFrame fTra) {
+	public TraMT_EditFrame(DatabaseTable vls, ChiTiet_DataFrame f, Tra_DataFrame fTra) {
 		super(vls, f);
 		this.fTra = fTra;
 		mainFrame.setTitle("Trả sách");
@@ -44,7 +44,6 @@ public class TraMT_EditFrame extends Abstract_EditFrame{
 		jPanel.add(AutoCal);
 		mainFrame.add(jPanel, 7);
 		setupAutoCalAction();
-		
 		
 		GetInfoTextArea[0].setText((String) vls.getValueAt(f.getRow, 0));
 		GetInfoTextArea[0].setEditable(false);
@@ -99,7 +98,6 @@ public class TraMT_EditFrame extends Abstract_EditFrame{
 				mainFrame.setVisible(false);
 			}
 		});
-		
 	}
 	
 	private void setupAutoCalAction(){

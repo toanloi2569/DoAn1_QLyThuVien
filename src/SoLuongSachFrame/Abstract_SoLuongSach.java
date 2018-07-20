@@ -19,9 +19,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import Check.CheckInfoInput;
-import DataFrame.Muon_MTDataFrame;
-import TableModel.TableDatabase;
-import TableModel.TableTemporary;;
+import DataFrame.Muon_DataFrame;
+import TableModel.DatabaseTable;
+import TableModel.TemporaryTable;;
 
 /* Hiển thị frame nhập số lượng mượn sách */
 public abstract class Abstract_SoLuongSach {
@@ -34,10 +34,10 @@ public abstract class Abstract_SoLuongSach {
 	JTextField[] jTextFields;
 	String[] data;
 	int[] rows;
-	TableTemporary tvls;
-	TableDatabase vls;
+	TemporaryTable tvls;
+	DatabaseTable vls;
 	
-	public Abstract_SoLuongSach(String[] data, int[] rows, TableDatabase vls, TableTemporary tvls) {
+	public Abstract_SoLuongSach(String[] data, int[] rows, DatabaseTable vls, TemporaryTable tvls) {
 		this.rows = rows;
 		this.vls = vls;
 		this.tvls = tvls;

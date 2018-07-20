@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 import javax.swing.JOptionPane;
 
-import TableModel.TableDatabase;
+import TableModel.DatabaseTable;
 
 public class Database {
 	private Connection con;
@@ -52,6 +52,18 @@ public class Database {
 		return result;
 	}
 	
+	/* Lấy result set từ lệnh sql cho trước */
+	public ResultSet getResultSet(String sql) {
+		ResultSet result = null;
+		try {
+			result = stmt.executeQuery(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+		
+	}
+	
 	/* Trả ra resultSet trỏ vào bảng được tìm thấy */
 	public ResultSet search(String inputText) {
 		ResultSet result = null;
@@ -59,7 +71,7 @@ public class Database {
 		String sql = "select * from " + tableName + "\nwhere "; 
 		try {
 			for (int i = 1; i <= r.getMetaData().getColumnCount(); i++) {
-				sql += r.getMetaData().getColumnName(i) + " like " + "'%" + inputText + "%' or\n ";
+				sql += r.getMetaData().getColumnName(i) + " like binary " + "'%" + inputText + "%' or\n ";
 			}
 			sql = sql.substring(0,sql.length()-1-4);
 			result = stmt.executeQuery(sql);
@@ -134,11 +146,15 @@ public class Database {
 			stmt.executeUpdate(s);
 			return true;
 		} catch (SQLIntegrityConstraintViolationException e1) {
-			JOptionPane.showMessageDialog(null, "Độc giả (Sách) đang mượn (được mượn), không thể xóa");
+			JOptionPane.showMessageDialog(null, "Độc giả (Sách) : "+pk1+" đang mượn (được mượn), không thể xóa");
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Xóa không thành công");
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public String getTableName(){
+		return tableName;
 	}
 }

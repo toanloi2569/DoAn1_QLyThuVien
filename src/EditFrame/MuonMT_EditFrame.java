@@ -7,19 +7,19 @@ import java.util.Calendar;
 import javax.swing.JOptionPane;
 
 import DataFrame.Main;
-import DataFrame.Muon_MTDataFrame;
-import TableModel.TableDatabase;
-import TableModel.TableTemporary;
+import DataFrame.Muon_DataFrame;
+import TableModel.DatabaseTable;
+import TableModel.TemporaryTable;
 
 /* Sử dụng khi ấn "Xác nhận mượn sách" trong frame mượn sách */
 public class MuonMT_EditFrame extends Them_EditFrame {
 
-	static TableDatabase vlsMuonTra = Main.vlsMuonTra;
-	static TableDatabase vlsChiTiet = Main.vlsChiTiet;
-	TableDatabase vlsSach;
-	TableTemporary tvls;
+	static DatabaseTable vlsMuonTra = Main.vlsMuonTra;
+	static DatabaseTable vlsChiTiet = Main.vlsChiTiet;
+	DatabaseTable vlsSach;
+	TemporaryTable tvls;
 
-	public MuonMT_EditFrame(Muon_MTDataFrame f) {
+	public MuonMT_EditFrame(Muon_DataFrame f) {
 		super(vlsMuonTra, f);
 		this.vlsSach = f.getDatabaseTable();
 		this.tvls = f.getTemporaryTable();
@@ -60,7 +60,7 @@ public class MuonMT_EditFrame extends Them_EditFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				/* Kiểm tra dữ liệu nhập vào, ngày mượn phải trước ngày trả */
-				if (!checkInfo()) {
+				if (!isError()) {
 					JOptionPane.showMessageDialog(null, mess);
 					return;
 				}

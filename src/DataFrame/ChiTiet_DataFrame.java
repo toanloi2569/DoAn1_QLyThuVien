@@ -15,10 +15,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import EditFrame.TraMT_EditFrame;
-import TableModel.TableDatabase;
+import TableModel.DatabaseTable;
 
 public class ChiTiet_DataFrame extends Abstract_DataFrame{
-	public ChiTiet_DataFrame(TableDatabase vls) {
+	public ChiTiet_DataFrame(DatabaseTable vls) {
 		super(vls);
 		// TODO Auto-generated constructor stub
 		this.remove(InformationPanel);
@@ -89,7 +89,6 @@ public class ChiTiet_DataFrame extends Abstract_DataFrame{
 			JOptionPane.showMessageDialog(null, "Sách đã trả");
 			return;
 		}
-			
 		TraMT_EditFrame t = new TraMT_EditFrame(vls, ChiTiet_DataFrame.this, Main.TraFrame);
 	}
 }

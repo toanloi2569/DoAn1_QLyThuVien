@@ -5,12 +5,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import Check.CheckDocGiaInput;
+import Check.CheckMuonTraInput;
+import Check.CheckNhanVienInput;
+import Check.CheckSachInput;
 import DataFrame.Abstract_DataFrame;
-import TableModel.TableDatabase;
+import TableModel.DatabaseTable;
 
 public class Sua_EditFrame extends Abstract_EditFrame{
 
-	public Sua_EditFrame(TableDatabase vls, Abstract_DataFrame f) {
+	public Sua_EditFrame(DatabaseTable vls, Abstract_DataFrame f) {
 		super(vls,f);
 		// TODO Auto-generated constructor stub
 		mainFrame.setTitle("Sửa dữ liệu");
@@ -29,7 +33,7 @@ public class Sua_EditFrame extends Abstract_EditFrame{
 		jButton.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (checkInfo()) {
+				if (!isError()) {
 					/* Lấy dữ liệu từ text */
 					String[] data = new String [vls.getColumnCount()];
 					for (int i = 0; i < vls.getColumnCount(); i++) {
@@ -52,5 +56,4 @@ public class Sua_EditFrame extends Abstract_EditFrame{
 			}
 		});
 	}
-
 }

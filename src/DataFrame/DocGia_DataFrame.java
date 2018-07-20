@@ -10,10 +10,10 @@ import javax.swing.event.ListSelectionListener;
 import Database.Database;
 import EditFrame.Sua_EditFrame;
 import EditFrame.Them_EditFrame;
-import TableModel.TableDatabase;
+import TableModel.DatabaseTable;
 
 public class DocGia_DataFrame extends Abstract_DataFrame{
-	public DocGia_DataFrame(TableDatabase vls) {
+	public DocGia_DataFrame(DatabaseTable vls) {
 		super(vls);
 		AddButton_Data.setText("Thêm độc giả mới");
 		UpdateButton_Information.setText("Sửa thông tin độc giả");

@@ -6,11 +6,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import DataFrame.Abstract_DataFrame;
-import TableModel.TableDatabase;
+import TableModel.DatabaseTable;
 
 public class Them_EditFrame extends Abstract_EditFrame {
 
-	public Them_EditFrame(TableDatabase vls, Abstract_DataFrame f) {
+	public Them_EditFrame(DatabaseTable vls, Abstract_DataFrame f) {
 		super(vls,f);
 		// TODO Auto-generated constructor stub
 		mainFrame.setTitle("Thêm dữ liệu");
@@ -25,7 +25,7 @@ public class Them_EditFrame extends Abstract_EditFrame {
 		jButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (checkInfo()) {
+				if (!isError()) {
 					String[] data = new String [vls.getColumnCount()];
 					/* Lấy dữ liệu từ text */
 					for (int i = 0; i < vls.getColumnCount(); i++) {
@@ -40,12 +40,11 @@ public class Them_EditFrame extends Abstract_EditFrame {
 		
 				/* Nếu không th�?a mãn đi�?u kiện, hiện thông báo yêu cầu nhập lại */
 				else {
-					JOptionPane.showMessageDialog(null, "Thêm dữ liệu sai ở cột : "+mess , "", 
+					JOptionPane.showMessageDialog(null, "Thêm dữ liệu sai ở cột "+mess , "", 
 							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
 		
 	}
-
 }

@@ -17,10 +17,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import Check.CheckChiTietInput;
+import Check.CheckDocGiaInput;
 import Check.CheckInfoInput;
+import Check.CheckMuonTraInput;
+import Check.CheckNhanVienInput;
+import Check.CheckSachInput;
 import DataFrame.Abstract_DataFrame;
 import Database.Database;
-import TableModel.TableDatabase;
+import TableModel.DatabaseTable;
 
 public abstract class Abstract_EditFrame {
 	JFrame mainFrame;
@@ -28,10 +33,10 @@ public abstract class Abstract_EditFrame {
 	JScrollPane[] jScrollPanes;
 	JButton jButton;
 	JLabel[] jLabels;
-	TableDatabase vls;
+	DatabaseTable vls;
 	Abstract_DataFrame f;
 	String mess;
-	public Abstract_EditFrame(TableDatabase vls, Abstract_DataFrame f) {
+	public Abstract_EditFrame(DatabaseTable vls, Abstract_DataFrame f) {
 		this.vls = vls;
 		this.f = f;
 
@@ -97,83 +102,59 @@ public abstract class Abstract_EditFrame {
 	 * Kiểm tra dữ liệu đầu vào 
 	 * Xây dựng thông báo hiển thị nếu xảy ra lỗi
 	 */
-	public boolean checkInfo() {
-		mess = "";
-		/* Chạy từng cột của bảng, kiểm tra đi�?u kiện đúng đối với từng cột */
+	public boolean isError() {
+		String[] data = new String[vls.getColumnCount()];
+		boolean result = false;
 		for (int i = 0; i < vls.getColumnCount(); i++) {
-			String s = vls.getColumnNameDataBase(i);
-			CheckInfoInput c = new CheckInfoInput(GetInfoTextArea[i].getText());
-			/* Kiểm tra các trư�?ng bắt buộc phải được nhập, nếu không nhập thì yêu cầu nhập lại */
-			if (s.equals("NgayTra")   || s.equals("TenDocGia") || s.equals("CMND")      || s.equals("NgayMuon")||
-				s.equals("NgayMuon")  || s.equals("NgayHenTra")|| s.equals("TenSach")   || s.equals("SoLuong")||
-				s.equals("MaSach")    || s.equals("MaDocGia")  || s.equals("MaNhanVien"))
-				if (c.isBlank()) {
-					mess += '\n'+vls.getColumnName(i)+c.getMess();
-					return false;
-				};
-			
-			/* Nếu là các trư�?ng b�? trống thì có thể cho qua */
-			if (c.isBlank()) 
-				continue;
-			
-			/* Kiểm tra các id, id phải không được b�? trống, không cách và có định dạng ID */
-			else if (s.equals("MaSach")    || s.equals("MaDocGia") || s.equals("MaNhanVien")) {
-				if (c.isNotID() || c.isSpace()) {
-					mess += '\n'+vls.getColumnName(i)+c.getMess();
-					return false;
-				}
-			}
-			
-			/* Kiểm tra các trư�?ng text, các trư�?ng này chỉ được nhập chữ và space */
-			else if (s.equals("TenDocGia") || s.equals("QueQuan")   || s.equals("TenTacGia") ||  s.equals("NhaSanXuat")|| 
-					 s.equals("TheLoai") || s.equals("TenNhanVien")) {
-				if (c.isNotAllWord()) {
-					mess += '\n'+vls.getColumnName(i)+c.getMess();
-					return false;
-				}
-			}
-			
-			/* Kiểm tra các trư�?ng ngày tháng, phải th�?a mãn ràng buộc ngày tháng */
-			else if (s.equals("NgaySinh")  || s.equals("NgayTra")   || s.equals("NgayMuon")  || s.equals("NgayHenTra")) {
-				if (c.isNotDate()) {
-					mess += '\n'+vls.getColumnName(i)+c.getMess();
-					return false;
-				}
-			}
-			
-			/* Kiểm tra trư�?ng giới tính */
-			else if (s.equals("GioiTinh")) {
-				if (c.isNotSex()) {
-					mess += '\n'+vls.getColumnName(i)+c.getMess();
-					return false;
-				}
-			}
-			
-			/* Kiểm tra các trư�?ng chỉ được nhập số */
-			else if (s.equals("CMND")      || s.equals("TienPhat")  || s.equals("DonGia")    || s.equals("SoLuong") ||
-					 s.equals("NamXuatBan")) {
-				if (c.isNotAllNumber()) {
-					mess += '\n'+vls.getColumnName(i)+c.getMess();
-					return false;
-				}
-			}
-			
-			/* Kiểm tra trư�?ng email */
-			else if (s.equals("Email")) {
-				if (c.isNotEmail()) {
-					mess += '\n'+vls.getColumnName(i)+c.getMess();
-					return false;
-				}
-			};
-			
-			/* Kiểm tra trư�?ng năm */
-			if (s.equals("NamXuatBan")) 
-				if (c.isNotYear()) {
-					mess += '\n'+vls.getColumnName(i)+c.getMess();
-					return false;
-				}
+			if (GetInfoTextArea[i].getText().length() == 0) 
+				data[i] = null;
+			else data[i] = GetInfoTextArea[i].getText();	
 		}
-		return true;
+		
+		System.out.println(f.getClass().getName());
+		if (f.getClass().getName().equals("DataFrame.Sach_DataFrame")) {
+			CheckSachInput c = new CheckSachInput(data);
+			result = c.isError();
+			mess = c.getMess();
+			return result;
+		}
+		
+		else if (f.getClass().getName().equals("DataFrame.NhanVien_DataFrame")) {
+			CheckNhanVienInput c = new CheckNhanVienInput(data);
+			result = c.isError();
+			mess = c.getMess();
+			return result;
+		}
+		
+		else if (f.getClass().getName().equals("DataFrame.DocGia_DataFrame")) {
+			CheckDocGiaInput c = new CheckDocGiaInput(data);
+			result = c.isError();
+			mess = c.getMess();
+			return result;
+		}
+		
+		else if (f.getClass().getName().equals("DataFrame.Tra_DataFrame")) {
+			CheckMuonTraInput c = new CheckMuonTraInput(data);
+			result = c.isError();
+			mess = c.getMess();
+			return result;
+		}
+		
+		else if (f.getClass().getName().equals("DataFrame.Muon_DataFrame")) {
+			CheckMuonTraInput c = new CheckMuonTraInput(data);
+			result = c.isError();
+			mess = c.getMess();
+			return result;
+		}
+		
+		else if (f.getClass().getName().equals("DataFrame.ChiTiet_DataFrame")) {
+			CheckChiTietInput c = new CheckChiTietInput(data);
+			result = c.isError();
+			mess = c.getMess();
+			return result;
+		}
+		
+		return result;
 	}
 
 	/* Cài đặt sự kiện khi nhấn thêm hoặc sửa */

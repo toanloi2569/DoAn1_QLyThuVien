@@ -10,10 +10,10 @@ import javax.swing.event.ListSelectionListener;
 import Database.Database;
 import EditFrame.Sua_EditFrame;
 import EditFrame.Them_EditFrame;
-import TableModel.TableDatabase;
+import TableModel.DatabaseTable;
 
 public class Sach_DataFrame extends Abstract_DataFrame{
-	public Sach_DataFrame(TableDatabase vls) {
+	public Sach_DataFrame(DatabaseTable vls) {
 		super(vls);
 		AddButton_Data.setText("Thêm sách mới");
 		UpdateButton_Information.setText("Sửa dữ liệu sách");

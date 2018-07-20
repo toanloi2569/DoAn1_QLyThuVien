@@ -29,8 +29,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Database.Database;
-import TableModel.TableDatabase;
-import TableModel.TableTemporary;
+import TableModel.DatabaseTable;
+import TableModel.TemporaryTable;
 
 /*
  *	Frame có 2 phần chính là DisplayDataPanel và InformationPanel
@@ -43,8 +43,8 @@ public abstract class Abstract_DataFrame extends JPanel{
 	final int mainFrameWidth = 1300;
 	final int mainFrameHeight = 600;
 	final int DataPanelWidth = (int) (0.7 * mainFrameWidth);
-	TableTemporary tvls;
-	TableDatabase vls;
+	TemporaryTable tvls;
+	DatabaseTable vls;
 	public static int getRow = -1;
 	public static int[] rows;
 	JLabel SearchLabel;
@@ -73,7 +73,7 @@ public abstract class Abstract_DataFrame extends JPanel{
 	 * prepareGUI : �?ặt các đối tượng một cách tương đối vào frame 
 	 * setupTable : Lấy dữ liệu từ vls đặt vào table
 	 */
-	public Abstract_DataFrame(TableDatabase vls) {
+	public Abstract_DataFrame(DatabaseTable vls) {
 		this.vls = vls;
 		
 		/* �?ặt các thành phần 1 cách tương đối vào frame */
@@ -324,7 +324,7 @@ public abstract class Abstract_DataFrame extends JPanel{
 		/* Tìm kiếm text trong database và hiển thị */
 		String text = SearchText_Data.getText();
 		ResultSet result = vls.searchOnDatabase(text);
-		vls.display(result);
+		if (result != null) vls.display(result);
 		vls.fireTableDataChanged();
 	}
 	

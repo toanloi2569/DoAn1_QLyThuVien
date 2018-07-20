@@ -6,12 +6,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import Check.CheckInfoInput;
-import TableModel.TableDatabase;
-import TableModel.TableTemporary;
+import TableModel.DatabaseTable;
+import TableModel.TemporaryTable;
 
 public class ThayDoiSoLuong extends Abstract_SoLuongSach{
 
-	public ThayDoiSoLuong(String[] data, int[] rows, TableDatabase vls, TableTemporary tvls) {
+	public ThayDoiSoLuong(String[] data, int[] rows, DatabaseTable vls, TemporaryTable tvls) {
 		super(data, rows, vls, tvls);
 		// TODO Auto-generated constructor stub
 		mainButton.setText("Xác nhận sửa");

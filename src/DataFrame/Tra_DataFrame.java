@@ -16,12 +16,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Database.Database;
-import TableModel.TableDatabase;
+import TableModel.DatabaseTable;
 
 public class Tra_DataFrame extends Abstract_DataFrame {
 	ResultSet resultSet;
 	int getRow;
-	public Tra_DataFrame(TableDatabase vls) {
+	public Tra_DataFrame(DatabaseTable vls) {
 		super(vls);
 		this.remove(InformationPanel);
 		AddButton_Data.setText("Xem chi tiết mượn");
@@ -58,7 +58,6 @@ public class Tra_DataFrame extends Abstract_DataFrame {
 			}
 		});
 	}
-	
 
 	/*Xóa bảng chi tiết mượn trả hiện tại
 	 * Gọi hàm search để lấy result set bảng chứa các giá trị tương ứng

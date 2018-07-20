@@ -10,10 +10,10 @@ import javax.swing.event.ListSelectionListener;
 import Database.Database;
 import EditFrame.Sua_EditFrame;
 import EditFrame.Them_EditFrame;
-import TableModel.TableDatabase;
+import TableModel.DatabaseTable;
 
 public class NhanVien_DataFrame extends Abstract_DataFrame{
-	public NhanVien_DataFrame(TableDatabase vls) {
+	public NhanVien_DataFrame(DatabaseTable vls) {
 		super(vls);
 		AddButton_Data.setText("Thêm nhân viên mới");
 		UpdateButton_Information.setText("Sửa thông tin nhân viên");

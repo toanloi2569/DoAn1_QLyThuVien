@@ -2,6 +2,7 @@ package DataFrame;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,25 +10,30 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 import Database.Database;
-import TableModel.TableDatabase;
+import GetDataFromExcel.AbstractGetDataFromExcel;
+import GetDataFromExcel.GetSachFromExcel;
+import TableModel.DatabaseTable;
+import TableModel.StatisticalTable;
 
 public class Main {
 	public final static int mainFrameWidth = 1300;
 	public final static int mainFrameHeight = 730;
 	public static JFrame mainFrame;
 	public static JPanel jPanel1, jPanel2;
-	public static JButton SachButton, NhanVienButton, DocGiaButton, MuonButton, TraButton;
-	public static TableDatabase vlsSach = new TableDatabase(new Database("sach"));
-	public static TableDatabase vlsMuonTra = new TableDatabase(new Database("muontra"));
-	public static TableDatabase vlsChiTiet = new TableDatabase();
-	public static TableDatabase vlsNhanVien = new TableDatabase(new Database("nhanvien"));
-	public static TableDatabase vlsDocGia = new TableDatabase(new Database("docgia"));
+	public static JButton SachButton, NhanVienButton, DocGiaButton, MuonButton, TraButton, GetSachExcelButton, StatisticalButton;
+	public static DatabaseTable vlsSach = new DatabaseTable(new Database("sach"));
+	public static DatabaseTable vlsMuonTra = new DatabaseTable(new Database("muontra"));
+	public static DatabaseTable vlsChiTiet = new DatabaseTable();
+	public static DatabaseTable vlsNhanVien = new DatabaseTable(new Database("nhanvien"));
+	public static DatabaseTable vlsDocGia = new DatabaseTable(new Database("docgia"));
 	public static Sach_DataFrame SachFrame = new Sach_DataFrame(vlsSach);
 	public static DocGia_DataFrame DocGiaFrame = new DocGia_DataFrame(vlsDocGia);
 	public static NhanVien_DataFrame NhanVienFrame = new NhanVien_DataFrame(vlsNhanVien);
-	public static Muon_MTDataFrame MuonFrame = new Muon_MTDataFrame(vlsSach);
+	public static Muon_DataFrame MuonFrame = new Muon_DataFrame(vlsSach);
 	public static Tra_DataFrame TraFrame = new Tra_DataFrame(vlsMuonTra);
 	public static ChiTiet_DataFrame ChiTietFrame = new ChiTiet_DataFrame(vlsChiTiet);
 
@@ -38,7 +44,7 @@ public class Main {
 		mainFrame.setResizable(true);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setLayout(new BoxLayout(mainFrame.getContentPane(), BoxLayout.Y_AXIS));
-		;
+		
 		prepareGUI();
 		setActionButton();
 		mainFrame.setVisible(true);
@@ -65,6 +71,13 @@ public class Main {
 
 		TraButton = new JButton("Chính sửa và trả");
 		TraButton.setPreferredSize(dimension);
+		
+		GetSachExcelButton = new JButton("Lấy giữ liệu từ excel");
+		GetSachExcelButton.setPreferredSize(dimension);
+		GetSachExcelButton.setMargin(new Insets(0, 0, 0, 0));
+		
+		StatisticalButton = new JButton("Thống kê");
+		StatisticalButton.setPreferredSize(dimension);
 
 		jPanel1 = new JPanel();
 		jPanel1.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
@@ -74,11 +87,12 @@ public class Main {
 		jPanel1.add(DocGiaButton);
 		jPanel1.add(MuonButton);
 		jPanel1.add(TraButton);
+		jPanel1.add(GetSachExcelButton);
+		jPanel1.add(StatisticalButton);
 
 		jPanel2 = new JPanel(new FlowLayout());
 		jPanel2.setPreferredSize(new Dimension(mainFrameWidth, mainFrameHeight - 150));
-		// jPanel2.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-		jPanel2.add(MuonFrame);
+		jPanel2.add(SachFrame);
 
 		mainFrame.add(jPanel1);
 		mainFrame.add(jPanel2);
@@ -141,6 +155,30 @@ public class Main {
 				jPanel2.repaint();
 				vlsChiTiet.deleteAllValues();
 				vlsChiTiet.fireTableDataChanged();
+			}
+		});
+		
+		GetSachExcelButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				GetSachFromExcel t = new GetSachFromExcel();
+			}
+		});
+		
+		StatisticalButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				jPanel2.removeAll();
+				jPanel2.revalidate();
+				jPanel2.repaint();
+				StatisticalTable vlsStatistical = new StatisticalTable(new Database("Sach"), "Tên tác giả","Số lượng đầu sách");
+				JTable table = new JTable(vlsStatistical);
+				JScrollPane j = new JScrollPane(table);
+				jPanel2.add(j);
 			}
 		});
 	}

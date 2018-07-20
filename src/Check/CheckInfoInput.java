@@ -37,11 +37,9 @@ public class CheckInfoInput {
 
 	/* Kiểm tra xâu có trống không */
 	public boolean isBlank() {
+		if (InputText == null) return true;
 		int x = InputText.length();
-		if (x == 0) {
-			mess = " : Dòng bỏ trắng";
-			return true;
-		}
+		
 		while (x > 0 && InputText.charAt(x - 1) == ' ')
 			x--;
 		if (x == 0) {
@@ -214,4 +212,6 @@ public class CheckInfoInput {
 	public String getMess () {
 		return mess;
 	}
+	
+	
 }
